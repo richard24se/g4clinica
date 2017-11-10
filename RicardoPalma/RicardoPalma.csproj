@@ -170,6 +170,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SessionExpireAttribute.cs" />
+    <Compile Include="Models\BEAtencionSalaObservacion.cs" />
+    <Compile Include="Models\BEReporteAtencionSalaObservacion.cs" />
     <Compile Include="Models\BEReporteAtencionEmergencia.cs" />
     <Compile Include="Models\BESala.cs" />
     <Compile Include="Models\BEReporteTriaje.cs" />
@@ -423,6 +425,7 @@
     <Content Include="Images\no_pdf.png" />
     <Content Include="Images\pdf.png" />
     <Content Include="Images\remove.png" />
+    <Content Include="ScriptsClient\ScriptAtencionSalaObservacion.js" />
     <Content Include="ScriptsClient\ScriptConstantes.js" />
     <Content Include="ScriptsClient\ScriptLogin.js" />
     <Content Include="ScriptsClient\ScriptAtencionEmergencia.js" />
@@ -719,6 +722,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Triaje\GenerarTriaje.cshtml" />
     <Content Include="Views\Atencion\AtencionEmergencia.cshtml" />
+    <Content Include="Views\Atencion\AtencionSalaObservacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

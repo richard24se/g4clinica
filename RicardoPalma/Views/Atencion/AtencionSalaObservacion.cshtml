@@ -1,13 +1,13 @@
-﻿@model  RicardoPalma.Models.BEAtencionEmergencia
+﻿@model  RicardoPalma.Models.BEAtencionSalaObservacion
 @{
-    ViewBag.Title = "Atencion de Emergencias";
+    ViewBag.Title = "Atencion de Salas Observación";
     Layout = "~/Views/_Layout.cshtml";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formAtencionEmergencia" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "formSalaObservacion" }))
 {
     @Html.AntiForgeryToken()
-    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptAtencionEmergencia.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptAtencionSalaObservacion.js"></script>
 
     <fieldset>
         <div class="panel panel panel-primary">
@@ -51,18 +51,10 @@
                                         }
                                     </select>
                                 </td>
-                                <td>
-                                    Sala: <select id="lsSala" class="form-control">
-                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSala)
-                                        {
-                                            <option value="@item.IdSala">@item.Sala</option>
-                                        }
-                                    </select>
-                                </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <button type="button" id="btnBuscar" onclick="BuscarAtencionEmergencia();" class="btn btn-primary btn-sm">Buscar atenciones</button>
+                                    <button type="button" id="btnBuscar" onclick="BuscarAtencionSalaObservacion();" class="btn btn-primary btn-sm">Buscar atenciones</button>
                                     <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
                                 </td>
                             </tr>
@@ -86,13 +78,15 @@
                                 <tr>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
                                     <th>Ingreso</th>
+                                    <th>Egreso</th>
                                     <th>Paciente</th>
                                     <th>Médico</th>
                                     <th>Tratamiento</th>
                                     <th>Diagnóstico</th>
                                     <th>Sala</th>
+                                    <th>Condición Ingreso</th>
+                                    <th>Condición Egreso</th>
                                 </tr>
                             </thead>
                         </table>
@@ -102,45 +96,8 @@
         </div>
 
 
-
-        <div id="divRegistrarAtencionEmergencia" class="modal fade" role="dialog">
-            <input type="hidden" id="hdIdTicketEmergencia_Registrar" />
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Registrar Atencion Emergencia</h4>
-                    </div>
-                    <div class="modal-body">
-                        <table width="100%">
-                            <tr>
-                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
-                                    Sala:
-                                </td>
-                                <td style="text-align:left">
-                                    <select id="lsSalaRegistrar" class="form-control">
-                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSalaMantenimiento)
-                                        {
-                                            <option value="@item.IdSala">@item.Sala</option>
-                                        }
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="btnModalGuardarRegistrar" class="btn btn-default" onclick="GuardarRegistroAtencionEmergencia();">Guardar</button>
-                        <button type="button" id="btnModalCerrarRegistrar" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-
-        <div id="divModificarAtencionEmergencia" class="modal fade" role="dialog">
-            <input type="hidden" id="hdIdTicketEmergencia_Modificar" />
+        <div id="divModificarAtencionSalaObservacion" class="modal fade" role="dialog">
+            <input type="hidden" id="hdIdTicketSalaObservacion_Modificar" />
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -157,7 +114,7 @@
                                     <select id="lsMedicoModificar" class="form-control">
                                         @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicoMantenimiento)
                                         {
-                                            <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                        <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
                                         }
                                     </select>
                                 </td>
@@ -170,7 +127,7 @@
                                     <select id="lsTratamientoModificar" class="form-control">
                                         @foreach (RicardoPalma.Models.Tratamiento item in @Model.ListadoTratamiento)
                                         {
-                                            <option value="@item.IdTratamiento">@item.Descripcion</option>
+                                        <option value="@item.IdTratamiento">@item.Descripcion</option>
                                         }
                                     </select>
                                 </td>
@@ -185,21 +142,24 @@
                             </tr>
                             <tr>
                                 <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
-                                    Sala:
+                                    Condición Ingreso:
                                 </td>
                                 <td style="text-align:left">
-                                    <select id="lsSalaModificar" class="form-control">
-                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSalaMantenimiento)
-                                        {
-                                            <option value="@item.IdSala">@item.Sala</option>
-                                        }
-                                    </select>
+                                    <input type='text' class="form-control" id='txtCondicionIngresoModificar' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                    Condición Egreso:
+                                </td>
+                                <td style="text-align:left">
+                                    <input type='text' class="form-control" id='txtCondicionEgresoModificar' />
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnModalGuardarModificar" class="btn btn-default" onclick="GuardarModificarAtencionEmergencia();">Guardar</button>
+                        <button type="button" id="btnModalGuardarModificar" class="btn btn-default" onclick="GuardarModificarAtencionSalaObservacion();">Guardar</button>
                         <button type="button" id="btnModalCerrarModificar" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
@@ -224,19 +184,21 @@
                                     Clave:
                                 </td>
                                 <td style="text-align:left">
-                                    <input type='password' class="form-control" id='txtClaveSupervisor'  />
+                                    <input type='password' class="form-control" id='txtClaveSupervisor' />
                                 </td>
                             </tr>
                         </table>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btnModalVerificarSupervisor" class="btn btn-default" onclick="EliminarAtencionEmergencia($('#hdIdTicketEmergencia_Supervisor').val());">Guardar</button>
+                        <button type="button" id="btnModalVerificarSupervisor" class="btn btn-default" onclick="EliminarAtencionSalaObservacion($('#hdIdTicketEmergencia_Supervisor').val());">Guardar</button>
                         <button type="button" id="btnModalCerrarSupervisor" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
 
             </div>
         </div>
+
+
     </fieldset>
 }
 

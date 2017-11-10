@@ -32,68 +32,38 @@ $(document).ready(function () {
 });
 
 
-//registrar
-function RegistrarAtencionEmergencia(idticketemergencia, idsala) {
-    //$('#lsSalaRegistrar').val(idsala);
-    $('#lsSalaRegistrar option[value=' + idsala + ']').prop('selected', true);
-    $('#hdIdTicketEmergencia_Registrar').val(idticketemergencia);
-    $('#divRegistrarAtencionEmergencia').modal({ backdrop: 'static', keyboard: false })
-}
-
-
-//registrar
-function GuardarRegistroAtencionEmergencia() {
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "Atencion/RegistrarAtencionEmergencia",
-        data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Registrar').val(), "idsala": $('#lsSalaRegistrar').val() },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se guardó correctamente');
-                $("#divRegistrarAtencionEmergencia").modal("hide");
-                $('#hdIdTicketEmergencia_Registrar').val('');
-                BuscarAtencionEmergencia();
-            } else {
-                alert(response.responseText);
-            }
-        }
-    });
-}
-
-
 
 //modificar
-function ModificarAtencionEmergencia(idticketemergencia, idmedico, idtratamiento, diagnostico, sala) {
+function ModificarAtencionSalaObservacion(idticketemergencia, idmedico, idtratamiento, diagnostico, codicioningreso, condicionegreso) {
     $('#lsMedicoModificar option[value=' + idmedico + ']').prop('selected', true);
     $('#lsTratamientoModificar option[value=' + idtratamiento + ']').prop('selected', true);
-    $('#lsSalaModificar option[value=' + sala + ']').prop('selected', true);
     $('#txtDiagnosticoModificar').val(diagnostico);
+    $('#txtCondicionIngresoModificar').val(codicioningreso);
+    $('#txtCondicionEgresoModificar').val(condicionegreso);
 
-    $('#hdIdTicketEmergencia_Modificar').val(idticketemergencia);
-    $('#divModificarAtencionEmergencia').modal({ backdrop: 'static', keyboard: false })
+    $('#hdIdTicketSalaObservacion_Modificar').val(idticketemergencia);
+    $('#divModificarAtencionSalaObservacion').modal({ backdrop: 'static', keyboard: false })
 }
 
 //modificar
-function GuardarModificarAtencionEmergencia() {
+function GuardarModificarAtencionSalaObservacion() {
     $.ajax({
         type: 'GET',
-        url: urlestatica + "Atencion/ModificarAtencionEmergencia",
-        data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "diagnostico": $('#txtDiagnosticoModificar').val(), "idsala": $('#lsSalaModificar').val() },
+        url: urlestatica + "Atencion/ModificarAtencionSalaObservacion",
+        data: { "idTicketEmergencia": $('#hdIdTicketSalaObservacion_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "diagnostico": $('#txtDiagnosticoModificar').val(), "condicioningreso": $('#txtCondicionIngresoModificar').val(), "condicionegreso": $('#txtCondicionEgresoModificar').val() },
         dataType: 'json',
         success: function (response) {
             if (response != null && response.success && response.responseText == 'OK') {
                 alert('Se modificó correctamente');
-                $("#divModificarAtencionEmergencia").modal("hide");
-                $('#hdIdTicketEmergencia_Modificar').val('');
-                BuscarAtencionEmergencia();
+                $("#divModificarAtencionSalaObservacion").modal("hide");
+                $('#hdIdTicketSalaObservacion_Modificar').val('');
+                BuscarAtencionSalaObservacion();
             } else {
                 alert(response.responseText);
             }
         }
     });
 }
-
 
 
 function ValidarSupervisor(idticketemergencia) {
@@ -104,12 +74,12 @@ function ValidarSupervisor(idticketemergencia) {
 }
 
 
-//eliminar
-function EliminarAtencionEmergencia(idticketemergencia) {
+//eliminar falta implementar todo eliminar
+function EliminarAtencionSalaObservacion(idticketemergencia) {
     if (claveSupervisor == $('#txtClaveSupervisor').val().trim()) {
         $.ajax({
             type: 'GET',
-            url: urlestatica + "Atencion/EliminarAtencionEmergencia",
+            url: urlestatica + "Atencion/EliminarAtencionSalaObservacion",
             data: { "idTicketEmergencia": idticketemergencia },
             dataType: 'json',
             success: function (response) {
@@ -118,7 +88,7 @@ function EliminarAtencionEmergencia(idticketemergencia) {
                     $("#divSupervisor").modal("hide");
                     $('#hdIdTicketEmergencia_Supervisor').val('');
                     $('#txtClaveSupervisor').val('');
-                    BuscarAtencionEmergencia();
+                    BuscarAtencionSalaObservacion();
                 } else {
                     alert(response.responseText);
                 }
@@ -128,18 +98,17 @@ function EliminarAtencionEmergencia(idticketemergencia) {
     else {
         alert('Clave incorrecta');
     }
-
 }
 
 
 
-function BuscarAtencionEmergencia() {
+function BuscarAtencionSalaObservacion() {
     vartablaOT = $('#tblListado').DataTable({
         "scrollY": 300,
         "scrollX": true,
         "ajax": {
-            url: urlestatica + "Atencion/BuscarAtencionEmergencia",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#lsPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
+            url: urlestatica + "Atencion/BuscarAtencionSalaObservacion",
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#lsPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
@@ -149,15 +118,17 @@ function BuscarAtencionEmergencia() {
             }
         },
         "columns": [
-            { "data": "Registrar" },
             { "data": "Modificar" },
             { "data": "Eliminar" },
             { "data": "Ingreso" },
+            { "data": "Egreso" },
             { "data": "Paciente" },
             { "data": "Medico" },
             { "data": "Tratamiento" },
             { "data": "Diagnostico" },
             { "data": "Sala" },
+            { "data": "CondicionIngreso" },
+            { "data": "CondicionEgreso" },
         ],
         "bDestroy": true,
         "ordering": true,
@@ -210,4 +181,5 @@ function BuscarAtencionEmergencia() {
 
     });
 }
+
 
