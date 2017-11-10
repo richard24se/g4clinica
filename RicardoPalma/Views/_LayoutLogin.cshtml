@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/jquery-3.1.1.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/moment-with-locales.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/moment.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptConstantes.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptLogin.js"></script>
+    @RenderSection("JavaScript", required: false)
+
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))StylesClient/StyleLoading.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))StylesClient/StyleLogin.css" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
+    <script>
+        urlestatica = '@System.Configuration.ConfigurationManager.AppSettings["strUrl"]';
+    </script>
+</head>
+<body>
+    @RenderBody()
+    <div id="divModal" class="modal modalPrincipal"></div>
+</body>
+</html>

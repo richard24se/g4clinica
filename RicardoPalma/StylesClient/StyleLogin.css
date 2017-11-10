@@ -1,0 +1,40 @@
+﻿html, body {
+    height: 100%;
+    /*background-image: url('../Images/CosapiBackground.jpg');*/
+    background-color: #eeffff;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 100% 100%;
+}
+
+.tableContainer-1 {
+    height: 100%;
+    width: 100%;
+    display: table;
+}
+
+.tableContainer-2 {
+    vertical-align: middle;
+    display: table-cell;
+    height: 100%;
+}
+
+.myTable {
+    margin: 0 auto;
+}
+
+/*//////////////////////////////////////////////////*/
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #05AFAF;
+    font-family: Verdana;
+}
+
+.panel > .panel-heading {
+    background-color: #05AFAF;
+    font-family: Verdana;
+}

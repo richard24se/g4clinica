@@ -1,0 +1,901 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ModelRicardoPalma.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Destino">
+          <Key>
+            <PropertyRef Name="IdDestino" />
+          </Key>
+          <Property Name="IdDestino" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="IdPaciente" />
+          </Key>
+          <Property Name="IdPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTipoPaciente" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="dni" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonalEmergencia">
+          <Key>
+            <PropertyRef Name="IdPersonalEmergencia" />
+          </Key>
+          <Property Name="IdPersonalEmergencia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ApellidoPaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ApellidoMaterno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DNI" Type="int" Nullable="false" />
+          <Property Name="Rol" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Prioridad">
+          <Key>
+            <PropertyRef Name="IdPrioridad" />
+          </Key>
+          <Property Name="IdPrioridad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Protocolo">
+          <Key>
+            <PropertyRef Name="IdProtocolo" />
+          </Key>
+          <Property Name="IdProtocolo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSintoma" Type="int" Nullable="false" />
+          <Property Name="IdPrioridad" Type="int" Nullable="false" />
+          <Property Name="IdDestino" Type="int" Nullable="false" />
+          <Property Name="Sala" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CondicionIngreso" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="CondicionEgreso" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="DiasAtencion" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sintoma">
+          <Key>
+            <PropertyRef Name="IdSintoma" />
+          </Key>
+          <Property Name="IdSintoma" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="TicketEmergencia">
+          <Key>
+            <PropertyRef Name="IdTicketEmergencia" />
+          </Key>
+          <Property Name="IdTicketEmergencia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPaciente" Type="int" Nullable="false" />
+          <Property Name="IdDestino" Type="int" />
+          <Property Name="EsViolencia" Type="bit" />
+          <Property Name="IdTicketTrauma" Type="int" />
+          <Property Name="IdTicketSala" Type="int" />
+          <Property Name="IdTratamiento" Type="int" />
+          <Property Name="IdPersonalEmergencia" Type="int" />
+          <Property Name="Ingreso" Type="datetime" />
+          <Property Name="Egreso" Type="datetime" />
+        </EntityType>
+        <EntityType Name="TicketSalaObservacion">
+          <Key>
+            <PropertyRef Name="IdTicketSala" />
+          </Key>
+          <Property Name="IdTicketSala" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ingreso" Type="datetime" />
+          <Property Name="Egreso" Type="datetime" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="200" />
+          <Property Name="CondicionIngreso" Type="varchar" MaxLength="200" />
+          <Property Name="CondicionEgreso" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="TicketTraumaShockTopico">
+          <Key>
+            <PropertyRef Name="IdTicketTrauma" />
+          </Key>
+          <Property Name="IdTicketTrauma" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ingreso" Type="datetime" />
+          <Property Name="Egreso" Type="datetime" />
+          <Property Name="Diagnostico" Type="varchar" MaxLength="200" />
+          <Property Name="EsTraumaShock" Type="bit" />
+        </EntityType>
+        <EntityType Name="TipoPaciente">
+          <Key>
+            <PropertyRef Name="IdTipoPaciente" />
+          </Key>
+          <Property Name="IdTipoPaciente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Tratamiento">
+          <Key>
+            <PropertyRef Name="IdTratamiento" />
+          </Key>
+          <Property Name="IdTratamiento" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Triaje">
+          <Key>
+            <PropertyRef Name="IdTriaje" />
+          </Key>
+          <Property Name="IdTriaje" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPrioridad" Type="int" Nullable="false" />
+          <Property Name="IdTicketEmergencia" Type="int" Nullable="false" />
+          <Property Name="IdSintoma" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodigoUsuario" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombres" Type="varchar" MaxLength="100" />
+          <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Paciente_TipoPaciente">
+          <End Role="TipoPaciente" Type="Self.TipoPaciente" Multiplicity="1" />
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPaciente">
+              <PropertyRef Name="IdTipoPaciente" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdTipoPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Protocolo_Destino">
+          <End Role="Destino" Type="Self.Destino" Multiplicity="1" />
+          <End Role="Protocolo" Type="Self.Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destino">
+              <PropertyRef Name="IdDestino" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Protocolo_Prioridad">
+          <End Role="Prioridad" Type="Self.Prioridad" Multiplicity="1" />
+          <End Role="Protocolo" Type="Self.Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prioridad">
+              <PropertyRef Name="IdPrioridad" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdPrioridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Protocolo_Sintoma">
+          <End Role="Sintoma" Type="Self.Sintoma" Multiplicity="1" />
+          <End Role="Protocolo" Type="Self.Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sintoma">
+              <PropertyRef Name="IdSintoma" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Destino">
+          <End Role="Destino" Type="Self.Destino" Multiplicity="0..1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destino">
+              <PropertyRef Name="IdDestino" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Paciente">
+          <End Role="Paciente" Type="Self.Paciente" Multiplicity="1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_PersonalEmergencia">
+          <End Role="PersonalEmergencia" Type="Self.PersonalEmergencia" Multiplicity="0..1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_TicketSalaObservacion">
+          <End Role="TicketSalaObservacion" Type="Self.TicketSalaObservacion" Multiplicity="0..1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketSalaObservacion">
+              <PropertyRef Name="IdTicketSala" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketSala" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_TicketTraumaShockTopico">
+          <End Role="TicketTraumaShockTopico" Type="Self.TicketTraumaShockTopico" Multiplicity="0..1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketTraumaShockTopico">
+              <PropertyRef Name="IdTicketTrauma" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketTrauma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Tratamiento">
+          <End Role="Tratamiento" Type="Self.Tratamiento" Multiplicity="0..1" />
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tratamiento">
+              <PropertyRef Name="IdTratamiento" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTratamiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_Prioridad">
+          <End Role="Prioridad" Type="Self.Prioridad" Multiplicity="1" />
+          <End Role="Triaje" Type="Self.Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prioridad">
+              <PropertyRef Name="IdPrioridad" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdPrioridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_Sintoma">
+          <End Role="Sintoma" Type="Self.Sintoma" Multiplicity="1" />
+          <End Role="Triaje" Type="Self.Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sintoma">
+              <PropertyRef Name="IdSintoma" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_TicketEmergencia">
+          <End Role="TicketEmergencia" Type="Self.TicketEmergencia" Multiplicity="1" />
+          <End Role="Triaje" Type="Self.Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketEmergencia" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdTicketEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelRicardoPalmaStoreContainer">
+          <EntitySet Name="Destino" EntityType="Self.Destino" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalEmergencia" EntityType="Self.PersonalEmergencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Prioridad" EntityType="Self.Prioridad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Protocolo" EntityType="Self.Protocolo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sintoma" EntityType="Self.Sintoma" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketEmergencia" EntityType="Self.TicketEmergencia" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketSalaObservacion" EntityType="Self.TicketSalaObservacion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TicketTraumaShockTopico" EntityType="Self.TicketTraumaShockTopico" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoPaciente" EntityType="Self.TipoPaciente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tratamiento" EntityType="Self.Tratamiento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Triaje" EntityType="Self.Triaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Paciente_TipoPaciente" Association="Self.FK_Paciente_TipoPaciente">
+            <End Role="TipoPaciente" EntitySet="TipoPaciente" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Protocolo_Destino" Association="Self.FK_Protocolo_Destino">
+            <End Role="Destino" EntitySet="Destino" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Protocolo_Prioridad" Association="Self.FK_Protocolo_Prioridad">
+            <End Role="Prioridad" EntitySet="Prioridad" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Protocolo_Sintoma" Association="Self.FK_Protocolo_Sintoma">
+            <End Role="Sintoma" EntitySet="Sintoma" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Destino" Association="Self.FK_TicketEmergencia_Destino">
+            <End Role="Destino" EntitySet="Destino" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Paciente" Association="Self.FK_TicketEmergencia_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_PersonalEmergencia" Association="Self.FK_TicketEmergencia_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_TicketSalaObservacion" Association="Self.FK_TicketEmergencia_TicketSalaObservacion">
+            <End Role="TicketSalaObservacion" EntitySet="TicketSalaObservacion" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_TicketTraumaShockTopico" Association="Self.FK_TicketEmergencia_TicketTraumaShockTopico">
+            <End Role="TicketTraumaShockTopico" EntitySet="TicketTraumaShockTopico" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Tratamiento" Association="Self.FK_TicketEmergencia_Tratamiento">
+            <End Role="Tratamiento" EntitySet="Tratamiento" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_Prioridad" Association="Self.FK_Triaje_Prioridad">
+            <End Role="Prioridad" EntitySet="Prioridad" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_Sintoma" Association="Self.FK_Triaje_Sintoma">
+            <End Role="Sintoma" EntitySet="Sintoma" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_TicketEmergencia" Association="Self.FK_Triaje_TicketEmergencia">
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ModelRicardoPalma" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ConnectionRicardoPalma" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="Destino" EntityType="ModelRicardoPalma.Destino" />
+          <EntitySet Name="Paciente" EntityType="ModelRicardoPalma.Paciente" />
+          <EntitySet Name="PersonalEmergencia" EntityType="ModelRicardoPalma.PersonalEmergencia" />
+          <EntitySet Name="Prioridad" EntityType="ModelRicardoPalma.Prioridad" />
+          <EntitySet Name="Protocolo" EntityType="ModelRicardoPalma.Protocolo" />
+          <EntitySet Name="Sintoma" EntityType="ModelRicardoPalma.Sintoma" />
+          <EntitySet Name="TicketEmergencia" EntityType="ModelRicardoPalma.TicketEmergencia" />
+          <EntitySet Name="TicketSalaObservacion" EntityType="ModelRicardoPalma.TicketSalaObservacion" />
+          <EntitySet Name="TicketTraumaShockTopico" EntityType="ModelRicardoPalma.TicketTraumaShockTopico" />
+          <EntitySet Name="TipoPaciente" EntityType="ModelRicardoPalma.TipoPaciente" />
+          <EntitySet Name="Tratamiento" EntityType="ModelRicardoPalma.Tratamiento" />
+          <EntitySet Name="Triaje" EntityType="ModelRicardoPalma.Triaje" />
+          <EntitySet Name="Usuario" EntityType="ModelRicardoPalma.Usuario" />
+          <AssociationSet Name="FK_Protocolo_Destino" Association="ModelRicardoPalma.FK_Protocolo_Destino">
+            <End Role="Destino" EntitySet="Destino" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Destino" Association="ModelRicardoPalma.FK_TicketEmergencia_Destino">
+            <End Role="Destino" EntitySet="Destino" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Paciente_TipoPaciente" Association="ModelRicardoPalma.FK_Paciente_TipoPaciente">
+            <End Role="TipoPaciente" EntitySet="TipoPaciente" />
+            <End Role="Paciente" EntitySet="Paciente" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Paciente" Association="ModelRicardoPalma.FK_TicketEmergencia_Paciente">
+            <End Role="Paciente" EntitySet="Paciente" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_PersonalEmergencia" Association="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Protocolo_Prioridad" Association="ModelRicardoPalma.FK_Protocolo_Prioridad">
+            <End Role="Prioridad" EntitySet="Prioridad" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_Prioridad" Association="ModelRicardoPalma.FK_Triaje_Prioridad">
+            <End Role="Prioridad" EntitySet="Prioridad" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Protocolo_Sintoma" Association="ModelRicardoPalma.FK_Protocolo_Sintoma">
+            <End Role="Sintoma" EntitySet="Sintoma" />
+            <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_Sintoma" Association="ModelRicardoPalma.FK_Triaje_Sintoma">
+            <End Role="Sintoma" EntitySet="Sintoma" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_TicketSalaObservacion" Association="ModelRicardoPalma.FK_TicketEmergencia_TicketSalaObservacion">
+            <End Role="TicketSalaObservacion" EntitySet="TicketSalaObservacion" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_TicketTraumaShockTopico" Association="ModelRicardoPalma.FK_TicketEmergencia_TicketTraumaShockTopico">
+            <End Role="TicketTraumaShockTopico" EntitySet="TicketTraumaShockTopico" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TicketEmergencia_Tratamiento" Association="ModelRicardoPalma.FK_TicketEmergencia_Tratamiento">
+            <End Role="Tratamiento" EntitySet="Tratamiento" />
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Triaje_TicketEmergencia" Association="ModelRicardoPalma.FK_Triaje_TicketEmergencia">
+            <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+            <End Role="Triaje" EntitySet="Triaje" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Destino">
+          <Key>
+            <PropertyRef Name="IdDestino" />
+          </Key>
+          <Property Name="IdDestino" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Protocolo" Relationship="ModelRicardoPalma.FK_Protocolo_Destino" FromRole="Destino" ToRole="Protocolo" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Destino" FromRole="Destino" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="Paciente">
+          <Key>
+            <PropertyRef Name="IdPaciente" />
+          </Key>
+          <Property Name="IdPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTipoPaciente" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="dni" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TipoPaciente" Relationship="ModelRicardoPalma.FK_Paciente_TipoPaciente" FromRole="Paciente" ToRole="TipoPaciente" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Paciente" FromRole="Paciente" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="PersonalEmergencia">
+          <Key>
+            <PropertyRef Name="IdPersonalEmergencia" />
+          </Key>
+          <Property Name="IdPersonalEmergencia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoPaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DNI" Type="Int32" Nullable="false" />
+          <Property Name="Rol" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="Prioridad">
+          <Key>
+            <PropertyRef Name="IdPrioridad" />
+          </Key>
+          <Property Name="IdPrioridad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Protocolo" Relationship="ModelRicardoPalma.FK_Protocolo_Prioridad" FromRole="Prioridad" ToRole="Protocolo" />
+          <NavigationProperty Name="Triaje" Relationship="ModelRicardoPalma.FK_Triaje_Prioridad" FromRole="Prioridad" ToRole="Triaje" />
+        </EntityType>
+        <EntityType Name="Protocolo">
+          <Key>
+            <PropertyRef Name="IdProtocolo" />
+          </Key>
+          <Property Name="IdProtocolo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSintoma" Type="Int32" Nullable="false" />
+          <Property Name="IdPrioridad" Type="Int32" Nullable="false" />
+          <Property Name="IdDestino" Type="Int32" Nullable="false" />
+          <Property Name="Sala" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Diagnostico" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CondicionIngreso" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CondicionEgreso" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="DiasAtencion" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Destino" Relationship="ModelRicardoPalma.FK_Protocolo_Destino" FromRole="Protocolo" ToRole="Destino" />
+          <NavigationProperty Name="Prioridad" Relationship="ModelRicardoPalma.FK_Protocolo_Prioridad" FromRole="Protocolo" ToRole="Prioridad" />
+          <NavigationProperty Name="Sintoma" Relationship="ModelRicardoPalma.FK_Protocolo_Sintoma" FromRole="Protocolo" ToRole="Sintoma" />
+        </EntityType>
+        <EntityType Name="Sintoma">
+          <Key>
+            <PropertyRef Name="IdSintoma" />
+          </Key>
+          <Property Name="IdSintoma" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Protocolo" Relationship="ModelRicardoPalma.FK_Protocolo_Sintoma" FromRole="Sintoma" ToRole="Protocolo" />
+          <NavigationProperty Name="Triaje" Relationship="ModelRicardoPalma.FK_Triaje_Sintoma" FromRole="Sintoma" ToRole="Triaje" />
+        </EntityType>
+        <EntityType Name="TicketEmergencia">
+          <Key>
+            <PropertyRef Name="IdTicketEmergencia" />
+          </Key>
+          <Property Name="IdTicketEmergencia" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPaciente" Type="Int32" Nullable="false" />
+          <Property Name="IdDestino" Type="Int32" />
+          <Property Name="EsViolencia" Type="Boolean" />
+          <Property Name="IdTicketTrauma" Type="Int32" />
+          <Property Name="IdTicketSala" Type="Int32" />
+          <Property Name="IdTratamiento" Type="Int32" />
+          <Property Name="IdPersonalEmergencia" Type="Int32" />
+          <Property Name="Ingreso" Type="DateTime" Precision="3" />
+          <Property Name="Egreso" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Destino" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Destino" FromRole="TicketEmergencia" ToRole="Destino" />
+          <NavigationProperty Name="Paciente" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Paciente" FromRole="TicketEmergencia" ToRole="Paciente" />
+          <NavigationProperty Name="PersonalEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" FromRole="TicketEmergencia" ToRole="PersonalEmergencia" />
+          <NavigationProperty Name="TicketSalaObservacion" Relationship="ModelRicardoPalma.FK_TicketEmergencia_TicketSalaObservacion" FromRole="TicketEmergencia" ToRole="TicketSalaObservacion" />
+          <NavigationProperty Name="TicketTraumaShockTopico" Relationship="ModelRicardoPalma.FK_TicketEmergencia_TicketTraumaShockTopico" FromRole="TicketEmergencia" ToRole="TicketTraumaShockTopico" />
+          <NavigationProperty Name="Tratamiento" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Tratamiento" FromRole="TicketEmergencia" ToRole="Tratamiento" />
+          <NavigationProperty Name="Triaje" Relationship="ModelRicardoPalma.FK_Triaje_TicketEmergencia" FromRole="TicketEmergencia" ToRole="Triaje" />
+        </EntityType>
+        <EntityType Name="TicketSalaObservacion">
+          <Key>
+            <PropertyRef Name="IdTicketSala" />
+          </Key>
+          <Property Name="IdTicketSala" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ingreso" Type="DateTime" Precision="3" />
+          <Property Name="Egreso" Type="DateTime" Precision="3" />
+          <Property Name="Diagnostico" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CondicionIngreso" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CondicionEgreso" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_TicketSalaObservacion" FromRole="TicketSalaObservacion" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="TicketTraumaShockTopico">
+          <Key>
+            <PropertyRef Name="IdTicketTrauma" />
+          </Key>
+          <Property Name="IdTicketTrauma" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ingreso" Type="DateTime" Precision="3" />
+          <Property Name="Egreso" Type="DateTime" Precision="3" />
+          <Property Name="Diagnostico" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="EsTraumaShock" Type="Boolean" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_TicketTraumaShockTopico" FromRole="TicketTraumaShockTopico" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="TipoPaciente">
+          <Key>
+            <PropertyRef Name="IdTipoPaciente" />
+          </Key>
+          <Property Name="IdTipoPaciente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Paciente" Relationship="ModelRicardoPalma.FK_Paciente_TipoPaciente" FromRole="TipoPaciente" ToRole="Paciente" />
+        </EntityType>
+        <EntityType Name="Tratamiento">
+          <Key>
+            <PropertyRef Name="IdTratamiento" />
+          </Key>
+          <Property Name="IdTratamiento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Tratamiento" FromRole="Tratamiento" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="Triaje">
+          <Key>
+            <PropertyRef Name="IdTriaje" />
+          </Key>
+          <Property Name="IdTriaje" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPrioridad" Type="Int32" Nullable="false" />
+          <Property Name="IdTicketEmergencia" Type="Int32" Nullable="false" />
+          <Property Name="IdSintoma" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Prioridad" Relationship="ModelRicardoPalma.FK_Triaje_Prioridad" FromRole="Triaje" ToRole="Prioridad" />
+          <NavigationProperty Name="Sintoma" Relationship="ModelRicardoPalma.FK_Triaje_Sintoma" FromRole="Triaje" ToRole="Sintoma" />
+          <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_Triaje_TicketEmergencia" FromRole="Triaje" ToRole="TicketEmergencia" />
+        </EntityType>
+        <EntityType Name="Usuario">
+          <Key>
+            <PropertyRef Name="IdUsuario" />
+          </Key>
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodigoUsuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Clave" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Protocolo_Destino">
+          <End Type="ModelRicardoPalma.Destino" Role="Destino" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Protocolo" Role="Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destino">
+              <PropertyRef Name="IdDestino" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Destino">
+          <End Type="ModelRicardoPalma.Destino" Role="Destino" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Destino">
+              <PropertyRef Name="IdDestino" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Paciente_TipoPaciente">
+          <End Type="ModelRicardoPalma.TipoPaciente" Role="TipoPaciente" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Paciente" Role="Paciente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoPaciente">
+              <PropertyRef Name="IdTipoPaciente" />
+            </Principal>
+            <Dependent Role="Paciente">
+              <PropertyRef Name="IdTipoPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Paciente">
+          <End Type="ModelRicardoPalma.Paciente" Role="Paciente" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Paciente">
+              <PropertyRef Name="IdPaciente" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_PersonalEmergencia">
+          <End Type="ModelRicardoPalma.PersonalEmergencia" Role="PersonalEmergencia" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Protocolo_Prioridad">
+          <End Type="ModelRicardoPalma.Prioridad" Role="Prioridad" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Protocolo" Role="Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prioridad">
+              <PropertyRef Name="IdPrioridad" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdPrioridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_Prioridad">
+          <End Type="ModelRicardoPalma.Prioridad" Role="Prioridad" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Triaje" Role="Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Prioridad">
+              <PropertyRef Name="IdPrioridad" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdPrioridad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Protocolo_Sintoma">
+          <End Type="ModelRicardoPalma.Sintoma" Role="Sintoma" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Protocolo" Role="Protocolo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sintoma">
+              <PropertyRef Name="IdSintoma" />
+            </Principal>
+            <Dependent Role="Protocolo">
+              <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_Sintoma">
+          <End Type="ModelRicardoPalma.Sintoma" Role="Sintoma" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Triaje" Role="Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sintoma">
+              <PropertyRef Name="IdSintoma" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_TicketSalaObservacion">
+          <End Type="ModelRicardoPalma.TicketSalaObservacion" Role="TicketSalaObservacion" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketSalaObservacion">
+              <PropertyRef Name="IdTicketSala" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketSala" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_TicketTraumaShockTopico">
+          <End Type="ModelRicardoPalma.TicketTraumaShockTopico" Role="TicketTraumaShockTopico" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketTraumaShockTopico">
+              <PropertyRef Name="IdTicketTrauma" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketTrauma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TicketEmergencia_Tratamiento">
+          <End Type="ModelRicardoPalma.Tratamiento" Role="Tratamiento" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tratamiento">
+              <PropertyRef Name="IdTratamiento" />
+            </Principal>
+            <Dependent Role="TicketEmergencia">
+              <PropertyRef Name="IdTratamiento" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Triaje_TicketEmergencia">
+          <End Type="ModelRicardoPalma.TicketEmergencia" Role="TicketEmergencia" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Triaje" Role="Triaje" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TicketEmergencia">
+              <PropertyRef Name="IdTicketEmergencia" />
+            </Principal>
+            <Dependent Role="Triaje">
+              <PropertyRef Name="IdTicketEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelRicardoPalmaStoreContainer" CdmEntityContainer="ConnectionRicardoPalma">
+          <EntitySetMapping Name="Destino">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Destino">
+              <MappingFragment StoreEntitySet="Destino">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdDestino" ColumnName="IdDestino" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Paciente">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Paciente">
+              <MappingFragment StoreEntitySet="Paciente">
+                <ScalarProperty Name="dni" ColumnName="dni" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdTipoPaciente" ColumnName="IdTipoPaciente" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalEmergencia">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.PersonalEmergencia">
+              <MappingFragment StoreEntitySet="PersonalEmergencia">
+                <ScalarProperty Name="Rol" ColumnName="Rol" />
+                <ScalarProperty Name="DNI" ColumnName="DNI" />
+                <ScalarProperty Name="ApellidoMaterno" ColumnName="ApellidoMaterno" />
+                <ScalarProperty Name="ApellidoPaterno" ColumnName="ApellidoPaterno" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="IdPersonalEmergencia" ColumnName="IdPersonalEmergencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Prioridad">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Prioridad">
+              <MappingFragment StoreEntitySet="Prioridad">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdPrioridad" ColumnName="IdPrioridad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Protocolo">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Protocolo">
+              <MappingFragment StoreEntitySet="Protocolo">
+                <ScalarProperty Name="DiasAtencion" ColumnName="DiasAtencion" />
+                <ScalarProperty Name="CondicionEgreso" ColumnName="CondicionEgreso" />
+                <ScalarProperty Name="CondicionIngreso" ColumnName="CondicionIngreso" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Sala" ColumnName="Sala" />
+                <ScalarProperty Name="IdDestino" ColumnName="IdDestino" />
+                <ScalarProperty Name="IdPrioridad" ColumnName="IdPrioridad" />
+                <ScalarProperty Name="IdSintoma" ColumnName="IdSintoma" />
+                <ScalarProperty Name="IdProtocolo" ColumnName="IdProtocolo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sintoma">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Sintoma">
+              <MappingFragment StoreEntitySet="Sintoma">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdSintoma" ColumnName="IdSintoma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketEmergencia">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.TicketEmergencia">
+              <MappingFragment StoreEntitySet="TicketEmergencia">
+                <ScalarProperty Name="Egreso" ColumnName="Egreso" />
+                <ScalarProperty Name="Ingreso" ColumnName="Ingreso" />
+                <ScalarProperty Name="IdPersonalEmergencia" ColumnName="IdPersonalEmergencia" />
+                <ScalarProperty Name="IdTratamiento" ColumnName="IdTratamiento" />
+                <ScalarProperty Name="IdTicketSala" ColumnName="IdTicketSala" />
+                <ScalarProperty Name="IdTicketTrauma" ColumnName="IdTicketTrauma" />
+                <ScalarProperty Name="EsViolencia" ColumnName="EsViolencia" />
+                <ScalarProperty Name="IdDestino" ColumnName="IdDestino" />
+                <ScalarProperty Name="IdPaciente" ColumnName="IdPaciente" />
+                <ScalarProperty Name="IdTicketEmergencia" ColumnName="IdTicketEmergencia" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketSalaObservacion">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.TicketSalaObservacion">
+              <MappingFragment StoreEntitySet="TicketSalaObservacion">
+                <ScalarProperty Name="CondicionEgreso" ColumnName="CondicionEgreso" />
+                <ScalarProperty Name="CondicionIngreso" ColumnName="CondicionIngreso" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Egreso" ColumnName="Egreso" />
+                <ScalarProperty Name="Ingreso" ColumnName="Ingreso" />
+                <ScalarProperty Name="IdTicketSala" ColumnName="IdTicketSala" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TicketTraumaShockTopico">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.TicketTraumaShockTopico">
+              <MappingFragment StoreEntitySet="TicketTraumaShockTopico">
+                <ScalarProperty Name="EsTraumaShock" ColumnName="EsTraumaShock" />
+                <ScalarProperty Name="Diagnostico" ColumnName="Diagnostico" />
+                <ScalarProperty Name="Egreso" ColumnName="Egreso" />
+                <ScalarProperty Name="Ingreso" ColumnName="Ingreso" />
+                <ScalarProperty Name="IdTicketTrauma" ColumnName="IdTicketTrauma" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoPaciente">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.TipoPaciente">
+              <MappingFragment StoreEntitySet="TipoPaciente">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTipoPaciente" ColumnName="IdTipoPaciente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tratamiento">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Tratamiento">
+              <MappingFragment StoreEntitySet="Tratamiento">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTratamiento" ColumnName="IdTratamiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Triaje">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Triaje">
+              <MappingFragment StoreEntitySet="Triaje">
+                <ScalarProperty Name="IdSintoma" ColumnName="IdSintoma" />
+                <ScalarProperty Name="IdTicketEmergencia" ColumnName="IdTicketEmergencia" />
+                <ScalarProperty Name="IdPrioridad" ColumnName="IdPrioridad" />
+                <ScalarProperty Name="IdTriaje" ColumnName="IdTriaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Usuario">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Usuario">
+              <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="CodigoUsuario" ColumnName="CodigoUsuario" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

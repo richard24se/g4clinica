@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@Page.Title</title>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/jquery-3.1.1.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/moment.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/moment-with-locales.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap-select.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/bootstrap3-typeahead.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/jquery.dataTables.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/DataTables/dataTables.buttons.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/jszip.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/DataTables/buttons.html5.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/pdfmake/pdfmake.min.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/pdfmake/vfs_fonts.js"></script>
+    @*<script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/DataTables/dataTables.responsive.min.js"></script>*@
+    @*<script src="@(new Uri(Request.Url, Url.Content("~")))Scripts/DataTables/responsive.bootstrap.min.js"></script>*@
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptConstantes.js"></script>
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptValidaciones.js"></script>
+    @RenderSection("JavaScript", required: false)
+
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/Datatables/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/Datatables/css/responsive.bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/Datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))Content/Datatables/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))StylesClient/StyleLoading.css" rel="stylesheet" type="text/css" />
+    <link href="@(new Uri(Request.Url, Url.Content("~")))StylesClient/StyleLayout.css" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
+
+    <script>
+        urlestatica = '@System.Configuration.ConfigurationManager.AppSettings["strUrl"]';
+
+        $(document).ready(function () {
+            $("#aOrdenTrabajo").attr("href", urlestatica + "Triaje/GenerarTriaje");
+            $("#aCerrarSesion").attr("href", urlestatica + "Login/Login");
+            $("#aActuaAtencionEmergencia").attr("href", urlestatica + "Atencion/AtencionEmergencia");
+            $("#aActuaAtencionObservacion").attr("href", urlestatica + "Atencion/AtencionObservacion");
+        });
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+                @{ var session = string.Empty; }
+                @if (HttpContext.Current.Session["NombreUsuario"] != null && HttpContext.Current.Session["NombreUsuario"].ToString() != "") { session = HttpContext.Current.Session["NombreUsuario"].ToString(); }
+                <h4>
+                    Usuario: @session
+                </h4>
+                <h5>
+                    <a class="lin" id="aCerrarSesion">Cerrar Sesión</a>
+                </h5>
+                <ul class="nav nav-pills nav-stacked">
+                    <li class="active"><a href="#">Menú</a></li>
+                    @*<li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu 1<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+
+                                <li><a href="#">Submenu 1-1</a></li>
+                                <li><a href="#">Submenu 1-2</a></li>
+                                <li><a href="#">Submenu 1-3</a></li>
+                            </ul>
+                        </li>*@
+                    <li><a id="aOrdenTrabajo">Generar Triaje</a></li>
+                    <li><a id="aActuaAtencionEmergencia">Actualizar Atenciones de Emergencia</a></li>
+                    @*<li><a id="aActuaAtencionObservacion">Actualizar Atenciones de Sala de Observación</a></li>*@
+                </ul>
+                <br />
+            </div>
+
+            <div class="col-sm-10">
+                <img width="100%" src="~/Images/barra_logo.png" />
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div id="divModal" class="modal modalPrincipal"></div>
+</body>
+</html>

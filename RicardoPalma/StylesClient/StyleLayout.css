@@ -1,0 +1,53 @@
+﻿html, body {
+    height: 100%;
+    /*background-image: url(../Images/CosapiBackgroundTransparent.jpg);*/
+    background-color:#eeffff;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: 100% 100%;
+}
+
+.textoNegrita {
+    font-weight: bold;
+}
+
+.table-responsive {
+    max-height: 100px;
+}
+
+td.details-control {
+    background: url('../Images/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('../Images/details_close.png') no-repeat center center;
+}
+
+
+
+/*//////////////////////////////////////////////////////*/
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #05AFAF;
+    font-family: Verdana;
+}
+
+.panel > .panel-heading {
+    background-color: #05AFAF;
+    font-family: Verdana;
+}
+
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    background-color: #05AFAF;
+    font-family: Verdana;
+}
+
+.sidenav {
+    color: #808080;
+}
