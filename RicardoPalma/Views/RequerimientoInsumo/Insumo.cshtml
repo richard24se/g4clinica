@@ -64,7 +64,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Cantidad:<input type='text' class="form-control"  style="width: 200px;" id='txtCantidadInsumo' />
+                                    Cantidad:<input type='text' class="form-control" style="width: 200px;" id='txtCantidadInsumo' />
                                 </td>
                             </tr>
                             <tr>
@@ -74,14 +74,15 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <button type="button" id="btnAgregar" onclick="AgregarInsumo();" class="btn btn-primary btn-sm">Agregar Insumo</button>
-                                    <button type="button" id="btnAprobacion" onclick="IrAutorizaciones();" class="btn btn-primary btn-sm">Autorizaciones</button>
+                                    <button type="button" id="btnAgregar" onclick="AgregarInsumo();" class="btn btn-primary btn-sm">Agregar Insumo a la lista</button>
+                                    <button type="button" id="btnGuardar" onclick="GuardarInsumo();" class="btn btn-primary btn-sm">Guardar Insumos</button>
                                     <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
+                                    <hr />
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button type="button" id="btnGuardar" onclick="GuardarInsumo();" class="btn btn-primary btn-sm">Guardar Insumo</button>
+                                    <button type="button" id="btnAprobacion" onclick="IrAutorizaciones();" class="btn btn-primary btn-sm">Ir a Autorizaciones</button>
                                 </td>
                             </tr>
                         </table>
@@ -103,6 +104,7 @@
                                     <th></th>
                                     <th></th>
                                     <th>Insumo</th>
+                                    <th>Sala</th>
                                     <th>Cantidad</th>
                                     <th>Motivo</th>
                                 </tr>

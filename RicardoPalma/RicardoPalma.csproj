@@ -177,6 +177,7 @@
     </Compile>
     <Compile Include="Helpers\SessionExpireAttribute.cs" />
     <Compile Include="Models\BEAtencionSalaObservacion.cs" />
+    <Compile Include="Models\BEInsumoForJson.cs" />
     <Compile Include="Models\BEInsumo.cs" />
     <Compile Include="Models\BEReporteAtencionSalaObservacion.cs" />
     <Compile Include="Models\BEReporteAtencionEmergencia.cs" />

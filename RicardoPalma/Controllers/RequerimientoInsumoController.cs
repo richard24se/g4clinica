@@ -30,12 +30,12 @@ namespace RicardoPalma.Controllers
 
 
         [HttpGet]
-        public ActionResult GuardarRequerimientoInsumo(int idAprobador, object insumos)
+        public ActionResult GuardarRequerimientoInsumo(int idAprobador, string insumos)
         {
             int id = 0;
             try
             {
-                id = new BLRequerimientoInsumo().GuardarRequerimientoInsumo( idAprobador, insumos);
+                id = new BLRequerimientoInsumo().GuardarRequerimientoInsumo(idAprobador, insumos);
                 return Json(new { success = true, responseText = "OK", IdRequerimiento = id }, JsonRequestBehavior.AllowGet);
             }
             catch (TimeoutException exx)
@@ -72,6 +72,67 @@ namespace RicardoPalma.Controllers
             {
                 listado = new BLRequerimientoInsumo().BuscarRequerimientos(fechaDesde, fechaHasta, Idsolicitante);
                 return Json(new { success = true, responseText = "OK", data = listado }, JsonRequestBehavior.AllowGet);
+            }
+            catch (TimeoutException exx)
+            {
+                return Json(new { success = false, responseText = exx.Message }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        [HttpGet]
+        public ActionResult ListarRequerimientoDetalle(int idrequerimiento)
+        {
+            string cadena;
+            try
+            {
+                cadena = new BLRequerimientoInsumo().ListarRequerimientoDetalle(idrequerimiento);
+                return Json(new { success = true, responseText = "OK", Detalle = cadena }, JsonRequestBehavior.AllowGet);
+            }
+            catch (TimeoutException exx)
+            {
+                return Json(new { success = false, responseText = exx.Message }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        public ActionResult CambiarEstadoInsumo(int idrequerimiento, int idinsumo, int idestado)
+        {
+            try
+            {
+                new BLRequerimientoInsumo().CambiarEstadoInsumo(idrequerimiento, idinsumo, idestado);
+                return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (TimeoutException exx)
+            {
+                return Json(new { success = false, responseText = exx.Message }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+
+        [HttpGet]
+        public ActionResult CambiarEstadoInsumoTodos(string listaidrequerimiento, bool checkAprobarTodos)
+        {
+            try
+            {
+                new BLRequerimientoInsumo().CambiarEstadoInsumoTodos(listaidrequerimiento, checkAprobarTodos);
+                return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
             }
             catch (TimeoutException exx)
             {

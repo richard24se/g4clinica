@@ -9,6 +9,14 @@
     @Html.AntiForgeryToken()
     <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/RequerimientoInsumo.js"></script>
 
+
+    <style>
+        .modal-dialog {
+            width: 800px;
+        }
+    </style>
+
+
     <fieldset>
         <div class="panel panel panel-primary">
             <div class="panel-heading">Autorizaciones de Requerimiento de Insumos de Emergencia</div>
@@ -26,8 +34,8 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Sala: <select id="lsSala" multiple class="form-control" style="height:200px;font-size:11px">
-                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSalaMantenimiento)
+                                    Sala: <select id="lsSala" class="form-control" style="width:200px;font-size:11px">
+                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSala)
                                         {
                                             <option value="@item.IdSala">@item.Sala</option>
                                         }
@@ -35,7 +43,7 @@
 
                                 </td>
                                 <td>
-                                    Solicitante: <select id="lsSolicitante" multiple class="form-control" style="height:200px;font-size:11px">
+                                    Solicitante: <select id="lsSolicitante" class="form-control" style="width:200px;font-size:11px">
                                         @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicos)
                                         {
                                             <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
@@ -44,22 +52,22 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td >
-                                    Aprobar Todos<input type="radio" id="rdTodos" name="Aprobacion" class="form-control"  />
-                                </td>
-                                <td>
-                                    Desaprobar Todos<input type="radio" id="rdNoTodos" name="Aprobacion" class="form-control" />
+                                <td colspan="2">
+                                    <div class="well well-sm">
+                                        Aprobar Seleccionados<input type="radio" id="rdTodos" checked="checked" name="Aprobacion" class="check-mark" /> <br />
+                                        Desaprobar Seleccionados<input type="radio"  id="rdNoTodos" name="Aprobacion" class="check-mark" />
+                                        <br />
+                                        <button type="button" id="btnAprobacion" onclick="AutorizarSegunCheck();" class="btn btn-primary btn-sm">Procesar</button>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
-                                    <button type="button" id="btnAprobacion" onclick="AutorizarSegunCheck();" class="btn btn-primary btn-sm">Procesar</button>
-                                    <button type="button" id="btnBuscar" onclick="BuscarRequerimientos();" class="btn btn-primary btn-sm">Buscar</button>
+                                    <button type="button" id="btnBuscar" onclick="BuscarAtencionEmergencia();" class="btn btn-primary btn-sm">Buscar</button>
                                     <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
                                 </td>
                             </tr>
                         </table>
-                        <br />
                     </div>
                 </div>
             </div>
@@ -75,6 +83,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th></th>
                                     <th>N° Requerimiento</th>
                                     <th>Fecha Solicitud</th>
                                     <th>Solicitante</th>
@@ -86,6 +95,38 @@
             </div>
         </div>
 
+
+
+        <div id="divRequerimientoDetalle" class="modal fade" role="dialog">
+            <input type="hidden" id="hdIdRequerimientoDetalle" />
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Insumos</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table id="tblRequerimientoDetalle" class="order-column display" style="font-size: 12px" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Nombre Insumo</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Sala</th>
+                                    <th>Motivo</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnModalCerrar" class="btn btn-default" onclick="LimpiarDatosRequerimientoDetalle();" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </fieldset>
 }

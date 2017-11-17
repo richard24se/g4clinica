@@ -17,9 +17,9 @@ function AgregarInsumo() {
     ArrayInsumo.push(
                          new BEArrayInsumo(contar,
                                             $("#lsInsumo").val(),
-                                            $("#lsInsumo").text(),
+                                            $("#lsInsumo option:selected").text(),
                                             $("#lsSala").val(),
-                                             $("#lsSala").text(),
+                                             $("#lsSala option:selected").text(),
                                             $("#txtCantidadInsumo").val(),
                                             $("#txtMotivoInsumo").val(),
                                             0
@@ -34,10 +34,10 @@ function LlenarGrillaInsumo(tabla, lista) {
     //Limpia todos los registros
     $('#' + tabla + ' tbody').empty();
 
-    //llena todos los registros de la grilla
-    var obj = document.getElementById(tabla).getElementsByTagName('tbody')[0];
-    $.each(lista, function (index, value) {        
-        if (value.eseliminado == 0) {            
+    //llena todos los registros de la grilla    
+    $.each(lista, function (index, value) {
+        if (value.eseliminado == 0) {
+            var obj = document.getElementById(tabla).getElementsByTagName('tbody')[0];
 
             lastRow = obj.rows.length, row = obj.insertRow(lastRow);
 
@@ -85,12 +85,14 @@ function GuardarInsumo() {
     $.ajax({
         type: 'GET',
         url: urlestatica + "RequerimientoInsumo/GuardarRequerimientoInsumo",
-        data: { "idAprobador": $('#lsAprobador').val(), "insumos": ArrayInsumo },
+        data: { "idAprobador": $('#lsAprobador').val(), "insumos": JSON.stringify(ArrayInsumo) },
         dataType: 'json',
         success: function (response) {
             if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se guardó correctamente. N° de Requerimiento:' + response.IdRequerimiento);
+                alert('Se guardó correctamente. N° de Requerimiento: ' + response.IdRequerimiento);
                 ArrayInsumo = [];
+                $("#txtCantidadInsumo").val(''),
+                $("#txtMotivoInsumo").val(''),
                 LlenarGrillaInsumo('tblListado', ArrayInsumo);
             } else {
                 alert(response.responseText);
@@ -104,8 +106,15 @@ function IrAutorizaciones() {
     window.location.href = urlestatica + 'RequerimientoInsumo/Autorizaciones';
 }
 
-/////////////////////////////////////////requerimientos/////////////////////////////////////////requerimientos/////////////////////////////////////////
 
+
+
+
+
+
+
+/////////////////////////////////////////requerimientos/////////////////////////////////////////requerimientos/////////////////////////////////////////
+var vartablaOT;
 
 $(document).ready(function () {
 
@@ -136,11 +145,129 @@ $(document).ready(function () {
         window.location.href = urlestatica + 'Principal/Index';
     });
 
+
+    vartablaOT = $('#tblListadoOT').DataTable({
+        "scrollY": 300,
+        "scrollX": true,
+        "bDestroy": true,
+        "ordering": true,
+        "responsive": true,
+        "order": [],
+        "columnDefs": [{
+            "targets": "no-sort",
+            "orderable": false
+        }]
+    });
+
+
 });
 
 
 
 
+function MostrarRequerimientoDetalle(idrequerimiento) {
+    $.ajax({
+        type: 'GET',
+        url: urlestatica + "RequerimientoInsumo/ListarRequerimientoDetalle",
+        data: { "idrequerimiento": idrequerimiento },
+        dataType: 'json',
+        success: function (response) {
+            if (response != null && response.success && response.responseText == 'OK') {
+                $("#tblRequerimientoDetalle tbody").append(response.Detalle);
+                $("#hdIdRequerimientoDetalle").val(idrequerimiento);
+                $('#divRequerimientoDetalle').modal({ backdrop: 'static', keyboard: false });
+            } else {
+                alert(response.responseText);
+            }
+        }
+    });
+}
+
+
+function CambiarEstadoInsumo(valor) {
+    var idinsumo, idestado;
+    idinsumo = valor.split("|")[0];
+    idestado = valor.split("|")[1];
+
+    $.ajax({
+        type: 'GET',
+        url: urlestatica + "RequerimientoInsumo/CambiarEstadoInsumo",
+        data: { "idrequerimiento": $("#hdIdRequerimientoDetalle").val(), "idinsumo": idinsumo, "idestado": idestado },
+        dataType: 'json',
+        success: function (response) {
+            if (response != null && response.success && response.responseText == 'OK') {
+                alert('Se cambió correctamente');
+            } else {
+                alert(response.responseText);
+            }
+        }
+    });
+
+}
+
+
+function LimpiarDatosRequerimientoDetalle() {
+    $("#hdIdRequerimientoDetalle").val('');
+    $("#tblRequerimientoDetalle tbody").empty();
+}
+
+
+//function ProbarDesaprobar(valor) {
+//    $('#tblListado tbody').find('tr').each(function () {
+//        var row = $(this);
+//        if (valor == 0) ///desactivar
+//            row.find('input[type="checkbox"]').prop('checked',false);
+//        else
+//            row.find('input[type="checkbox"]').prop('checked', true);
+//    });
+//}
+
+
+function AutorizarSegunCheck() {
+    var listaidrequerimiento = '';
+    var checkAprobarTodos;
+
+    if ($('#rdTodos').is(':checked'))
+        checkAprobarTodos = true;
+    else
+        checkAprobarTodos = false;
+
+
+    $('#tblListado tbody').find('tr input[type="checkbox"]:checked').each(function () {
+        listaidrequerimiento = listaidrequerimiento + $(this).val() + ",";
+    });
+    //if (checkAprobarTodos) {
+    //    $('#tblListado tbody').find('tr input[type="checkbox"]:checked').each(function () {
+    //        listaidrequerimiento = listaidrequerimiento + $(this).val() + ",";
+    //    });
+    //}
+    //else {
+    //    $('#tblListado tbody').find('tr input[type="checkbox"]:not(:checked)').each(function () {
+    //        listaidrequerimiento = listaidrequerimiento + $(this).val() + ",";
+    //    });
+    //}
+
+
+    listaidrequerimiento = listaidrequerimiento.substr(0, listaidrequerimiento.length - 1);
+
+
+
+    $.ajax({
+        type: 'GET',
+        url: urlestatica + "RequerimientoInsumo/CambiarEstadoInsumoTodos",
+        data: { "listaidrequerimiento": listaidrequerimiento, "checkAprobarTodos": checkAprobarTodos },
+        dataType: 'json',
+        success: function (response) {
+            if (response != null && response.success && response.responseText == 'OK') {
+                alert('Se actualizó los estados correctamente');
+            } else {
+                alert(response.responseText);
+            }
+        }
+    });
+
+
+}
 
 
 
@@ -150,7 +277,7 @@ function BuscarAtencionEmergencia() {
         "scrollX": true,
         "ajax": {
             url: urlestatica + "RequerimientoInsumo/BuscarRequerimientos",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "Idsolicitante": $("#lsSolicitante").val()},
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "Idsolicitante": $("#lsSolicitante").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
@@ -160,13 +287,8 @@ function BuscarAtencionEmergencia() {
             }
         },
         "columns": [
-            {},
-             {
-                 "className": 'details-control',
-                 "orderable": false,
-                 "data": null,
-                 "defaultContent": ''
-             },
+            { "data": "CheckSeleccionar" },
+            { "data": "BotonDetalle" },
             { "data": "IdRequerimiento" },
             { "data": "FechaSolicitud" },
             { "data": "Solicitante" },
@@ -178,11 +300,15 @@ function BuscarAtencionEmergencia() {
         "columnDefs": [{
             "targets": "no-sort",
             "orderable": false
-        }
-        //{
-        //    "targets": [3, 4, 5, 6, 7],
-        //    "width": "auto"
-        //}
+        },
+        {
+            "targets": [0],
+            "width": "20px"
+        },
+//{
+//    "targets": [3, 4, 5, 6, 7],
+//    "width": "auto"
+//}
         ],
         dom: 'lBfrtip',
         buttons: [
