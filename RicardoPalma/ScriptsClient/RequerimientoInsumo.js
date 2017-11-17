@@ -13,19 +13,39 @@ var ArrayInsumo = new Array();
 
 
 function AgregarInsumo() {
-    var contar = ArrayInsumo.length + 1;
-    ArrayInsumo.push(
-                         new BEArrayInsumo(contar,
-                                            $("#lsInsumo").val(),
-                                            $("#lsInsumo option:selected").text(),
-                                            $("#lsSala").val(),
-                                             $("#lsSala option:selected").text(),
-                                            $("#txtCantidadInsumo").val(),
-                                            $("#txtMotivoInsumo").val(),
-                                            0
+    var valor = true;
+    if ($("#txtCantidadInsumo").val() == '') {
+        alert('Ingrese la cantidad');
+        return;
+    }
+    else if ($("#txtMotivoInsumo").val() == '') {
+        alert('Ingrese el motivo');
+        return;
+    }
 
-                  ));
-    LlenarGrillaInsumo('tblListado', ArrayInsumo);
+
+    $.each(ArrayInsumo, function (index, value) {
+        if (value.idinsumo == $("#lsInsumo").val()) {
+            alert('el insumo ' + $("#lsInsumo option:selected").text() + ' ya ha sido agregado');
+            valor = false;
+        }
+    });
+
+    if (valor) {
+        var contar = ArrayInsumo.length + 1;
+        ArrayInsumo.push(
+                             new BEArrayInsumo(contar,
+                                                $("#lsInsumo").val(),
+                                                $("#lsInsumo option:selected").text(),
+                                                $("#lsSala").val(),
+                                                 $("#lsSala option:selected").text(),
+                                                $("#txtCantidadInsumo").val(),
+                                                $("#txtMotivoInsumo").val(),
+                                                0
+
+                      ));
+        LlenarGrillaInsumo('tblListado', ArrayInsumo);
+    }
 }
 
 

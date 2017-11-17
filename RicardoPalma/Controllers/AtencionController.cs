@@ -174,6 +174,21 @@ namespace RicardoPalma.Controllers
         }
         #endregion
 
+        #region Ambos
+        public ActionResult GetPacientesById(string nombrepaciente)
+        {
+            string cadena = string.Empty;
+            try
+            {
+                cadena = new BLAtencionEmergenciaTrauma().GetPacientesById(nombrepaciente);
+                return Json(new { success = true, responseText = "OK", data = cadena }, JsonRequestBehavior.AllowGet);
 
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
     }
 }

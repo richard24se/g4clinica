@@ -26,12 +26,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Paciente: <select id="lsPaciente" class="form-control">
-                                        @foreach (RicardoPalma.Models.Paciente item in @Model.ListadoPacientes)
-                                        {
-                                            <option value="@item.IdPaciente">@item.Nombre @item.ApellidoPaterno @item.ApellidoMaterno</option>
-                                        }
-                                    </select>
+                                    Paciente: <input type='text' class="form-control" autocomplete="off" placeholder="Pacientes" maxlength="70" onkeypress="return SoloTextoNumero(event);" id='txtPaciente' />
+                                    <input type="hidden" id="hdIdPaciente" />
+                                    @*Paciente: <select id="lsPaciente" class="form-control">
+                                            @foreach (RicardoPalma.Models.Paciente item in @Model.ListadoPacientes)
+                                            {
+                                                <option value="@item.IdPaciente">@item.Nombre @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                            }
+                                        </select>*@
                                 </td>
                                 <td>
                                     Médico: <select id="lsMedico" class="form-control">
@@ -114,7 +116,7 @@
                                     <select id="lsMedicoModificar" class="form-control">
                                         @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicoMantenimiento)
                                         {
-                                        <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                            <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
                                         }
                                     </select>
                                 </td>
@@ -127,7 +129,7 @@
                                     <select id="lsTratamientoModificar" class="form-control">
                                         @foreach (RicardoPalma.Models.Tratamiento item in @Model.ListadoTratamiento)
                                         {
-                                        <option value="@item.IdTratamiento">@item.Descripcion</option>
+                                            <option value="@item.IdTratamiento">@item.Descripcion</option>
                                         }
                                     </select>
                                 </td>

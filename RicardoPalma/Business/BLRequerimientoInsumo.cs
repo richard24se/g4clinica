@@ -56,7 +56,7 @@ namespace RicardoPalma.Business
 
 
                     //agregar insumos
-                    foreach (BEInsumo item in listainsumo)
+                    foreach (BEInsumo item in listainsumo.Where(f => f.eseliminado == false).ToList())
                     {
                         Requerimiento_Insumo reqinsu = new Requerimiento_Insumo();
                         reqinsu.IdInsumo = item.idinsumo;

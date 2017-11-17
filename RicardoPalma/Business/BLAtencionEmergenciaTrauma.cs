@@ -1,4 +1,5 @@
-﻿using RicardoPalma.Models;
+﻿using Newtonsoft.Json;
+using RicardoPalma.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -50,6 +51,36 @@ namespace RicardoPalma.Business
                 throw ex;
             }
             return atencion;
+        }
+
+        public string GetPacientesById(string nombrepaciente)
+        {
+            string cadenaJson = string.Empty;
+            try
+            {
+                using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
+                {
+                    var listado = bdRicardo.Paciente.Where(g => g.Nombre.Contains(nombrepaciente) || g.ApellidoPaterno.Contains(nombrepaciente) || g.ApellidoMaterno.Contains(nombrepaciente)).
+                        Select(h => new
+                    {
+                        id = h.IdPaciente,
+                        name = h.Nombre + " " + h.ApellidoPaterno + " " + h.ApellidoMaterno
+                    }).ToList();
+                    cadenaJson = JsonConvert.SerializeObject(listado);
+                }
+            }
+            catch (EntityException exx)
+            {
+                if (exx.InnerException != null && (exx.InnerException.Message.Contains("A network-related") || exx.InnerException.Message.Contains("Error relacionado con la red")))
+                    throw new TimeoutException(ConfigurationManager.AppSettings["strErrorTimeout"]);
+                else
+                    throw exx;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cadenaJson;
         }
 
         public void RegistrarAtencionEmergencia(int idTicketEmergencia, int idsala)
@@ -249,8 +280,8 @@ namespace RicardoPalma.Business
         public List<BEReporteAtencionEmergencia> BuscarAtencionEmergencia(string fechaDesde, string fechaHasta, int paciente, int medico, int destino, int sala)
         {
             List<BEReporteAtencionEmergencia> reporte = new List<BEReporteAtencionEmergencia>();
-            DateTime dfechaInicio = DateTime.ParseExact(fechaDesde, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime dfechaFin = DateTime.ParseExact(fechaHasta, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dfechaInicio = DateTime.ParseExact(fechaDesde + " 00:00:00", "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dfechaFin = DateTime.ParseExact(fechaHasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             //List<TicketEmergencia> bticket = new List<TicketEmergencia>();
             try
             {

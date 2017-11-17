@@ -26,12 +26,14 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Paciente: <select id="lsPaciente" class="form-control">
+                                    Paciente: <input type='text' class="form-control" autocomplete="off" placeholder="Pacientes" maxlength="70" onkeypress="return SoloTextoNumero(event);" id='txtPaciente' />
+                                    <input type="hidden" id="hdIdPaciente" />
+                                    @*Paciente: <select id="lsPaciente" class="form-control">
                                         @foreach (RicardoPalma.Models.Paciente item in @Model.ListadoPacientes)
                                         {
                                             <option value="@item.IdPaciente">@item.Nombre @item.ApellidoPaterno @item.ApellidoMaterno</option>
                                         }
-                                    </select>
+                                    </select>*@
                                 </td>
                                 <td>
                                     Médico: <select id="lsMedico" class="form-control">

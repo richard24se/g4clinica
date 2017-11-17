@@ -56,9 +56,9 @@ namespace RicardoPalma.Business
 
         public List<BEReporteAtencionSalaObservacion> BuscarAtencionSalaObservacion(string fechaDesde, string fechaHasta, int paciente, int medico, int destino)
         {
-            List<BEReporteAtencionSalaObservacion> reporte = new List<BEReporteAtencionSalaObservacion>();
-            DateTime dfechaInicio = DateTime.ParseExact(fechaDesde, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime dfechaFin = DateTime.ParseExact(fechaHasta, "dd/MM/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            List<BEReporteAtencionSalaObservacion> reporte = new List<BEReporteAtencionSalaObservacion>();            
+            DateTime dfechaInicio = DateTime.ParseExact(fechaDesde + " 00:00:00", "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime dfechaFin = DateTime.ParseExact(fechaHasta + " 23:59:59", "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             //List<TicketEmergencia> bticket = new List<TicketEmergencia>();
             try
             {

@@ -22,6 +22,25 @@ $(document).ready(function () {
     });
 
 
+    $('#txtPaciente').typeahead({
+        source: function (query, process) {
+            return $.get(urlestatica + 'Atencion/GetPacientesById', { nombrepaciente: query }, function (data) {
+                if (data != null && data.success && data.responseText == 'OK') {
+                    data = $.parseJSON(data.data);
+                    return process(data);
+                }
+                else
+                    alert(data.responseText);
+            });
+        },
+        limit: 10,
+        displayText: function (item) { return item.name; },
+        afterSelect: function (item) {
+            $('#hdIdPaciente').val(item.id);
+        }
+    });
+
+
 
 
 
@@ -108,7 +127,7 @@ function BuscarAtencionSalaObservacion() {
         "scrollX": true,
         "ajax": {
             url: urlestatica + "Atencion/BuscarAtencionSalaObservacion",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#lsPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#hdIdPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
