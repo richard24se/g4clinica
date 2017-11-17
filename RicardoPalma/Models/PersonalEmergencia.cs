@@ -16,6 +16,7 @@ namespace RicardoPalma.Models
     {
         public PersonalEmergencia()
         {
+            this.RequerimientoInsumo = new HashSet<RequerimientoInsumo>();
             this.TicketEmergencia = new HashSet<TicketEmergencia>();
         }
     
@@ -26,6 +27,7 @@ namespace RicardoPalma.Models
         public int DNI { get; set; }
         public string Rol { get; set; }
     
+        public virtual ICollection<RequerimientoInsumo> RequerimientoInsumo { get; set; }
         public virtual ICollection<TicketEmergencia> TicketEmergencia { get; set; }
     }
 }

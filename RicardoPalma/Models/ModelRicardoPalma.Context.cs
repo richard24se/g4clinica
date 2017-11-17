@@ -27,10 +27,14 @@ namespace RicardoPalma.Models
         }
     
         public virtual DbSet<Destino> Destino { get; set; }
+        public virtual DbSet<Estados> Estados { get; set; }
+        public virtual DbSet<Insumo> Insumo { get; set; }
         public virtual DbSet<Paciente> Paciente { get; set; }
         public virtual DbSet<PersonalEmergencia> PersonalEmergencia { get; set; }
         public virtual DbSet<Prioridad> Prioridad { get; set; }
         public virtual DbSet<Protocolo> Protocolo { get; set; }
+        public virtual DbSet<Requerimiento_Insumo> Requerimiento_Insumo { get; set; }
+        public virtual DbSet<RequerimientoInsumo> RequerimientoInsumo { get; set; }
         public virtual DbSet<Sintoma> Sintoma { get; set; }
         public virtual DbSet<TicketEmergencia> TicketEmergencia { get; set; }
         public virtual DbSet<TicketSalaObservacion> TicketSalaObservacion { get; set; }

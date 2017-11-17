@@ -1,0 +1,120 @@
+﻿@model  RicardoPalma.Models.BEAtencionSalaObservacion
+@{
+    ViewBag.Title = "Insumo";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "fromInsumo" }))
+{
+    @Html.AntiForgeryToken()
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/RequerimientoInsumo.js"></script>
+
+    <fieldset>
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Registro de Requerimientos de Insumos de Emergencia</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    Aprobador: <select id="lsAprobador"  class="form-control" style="width:200px; font-size:11px">
+                                        @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicos)
+                                        {
+                                            <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Ingreso de Insumos</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    Insumo: <select id="lsInsumo"  class="form-control" style="width:500px;font-size:11px">
+                                        @foreach (RicardoPalma.Models.Insumo item in @Model.ListadoInsumo)
+                                        {
+                                            <option value="@item.IdInsumo">@item.NombreInsumo</option>
+                                        }
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Sala: <select id="lsSala"  class="form-control" style="width:200px;font-size:11px">
+                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSalaMantenimiento)
+                                        {
+                                            <option value="@item.IdSala">@item.Sala</option>
+                                        }
+                                    </select>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Cantidad:<input type='text' class="form-control"  style="width: 200px;" id='txtCantidadInsumo' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Motivo:<input type='text' class="form-control" style="width: 200px;" id='txtMotivoInsumo' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" id="btnAgregar" onclick="AgregarInsumo();" class="btn btn-primary btn-sm">Agregar Insumo</button>
+                                    <button type="button" id="btnAprobacion" onclick="IrAutorizaciones();" class="btn btn-primary btn-sm">Autorizaciones</button>
+                                    <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" id="btnGuardar" onclick="GuardarInsumo();" class="btn btn-primary btn-sm">Guardar Insumo</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Insumos en lista</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table id="tblListado" class="order-column display" style="font-size: 12px" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Insumo</th>
+                                    <th>Cantidad</th>
+                                    <th>Motivo</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </fieldset>
+}
+

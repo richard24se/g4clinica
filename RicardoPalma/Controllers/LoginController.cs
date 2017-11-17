@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using RicardoPalma.Models;
+using RicardoPalma.Business;
+using System.Data.Entity.Core;
 
 namespace TecnologiaGMOS.Controllers
 {
@@ -21,21 +23,16 @@ namespace TecnologiaGMOS.Controllers
         public ActionResult ValidarUsuario(string sUsuario, string sPassword)
         {
             bool blResult = false;
+            string nombres = string.Empty;
             try
             {
-                Usuario bUsuario;
-                using (ConnectionRicardoPalma modelRicardo = new ConnectionRicardoPalma())
-                {
-                    bUsuario = modelRicardo.Usuario.Where(d => d.CodigoUsuario == sUsuario && d.Clave == sPassword).FirstOrDefault();
+                blResult = new BLLogin().ValidarUsuario(sUsuario, sPassword, ref nombres);
 
-                    if (bUsuario != null && bUsuario.CodigoUsuario == sUsuario && bUsuario.Clave == sPassword)
-                        blResult = true;
-                }
 
                 if (blResult)
                 {
                     Session["Usuario"] = sUsuario;
-                    Session["NombreUsuario"] = bUsuario.Nombres;
+                    Session["NombreUsuario"] = nombres;
 
                     return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
                 }
@@ -43,7 +40,10 @@ namespace TecnologiaGMOS.Controllers
                 {
                     return Json(new { success = false, responseText = "Usuario o clave incorrecta" }, JsonRequestBehavior.AllowGet);
                 }
-
+            }
+            catch (TimeoutException exx)
+            {
+                return Json(new { success = false, responseText = exx.Message }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

@@ -5,27 +5,35 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="204122311afa4179817a6dd0abbd25e8" Name="Diagram1">
-        <EntityTypeShape EntityType="ModelRicardoPalma.Destino" Width="1.5" PointX="0.75" PointY="5" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Destino" Width="1.5" PointX="0.75" PointY="23.75" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Estados" Width="1.5" PointX="3" PointY="12.75" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Insumo" Width="1.5" PointX="3" PointY="21.125" />
         <EntityTypeShape EntityType="ModelRicardoPalma.Paciente" Width="1.5" PointX="0.75" PointY="12.125" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.PersonalEmergencia" Width="1.5" PointX="0.75" PointY="23.75" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.Prioridad" Width="1.5" PointX="3.75" PointY="0.75" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.Protocolo" Width="1.5" PointX="6" PointY="4.25" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.Sintoma" Width="1.5" PointX="3.75" PointY="9.25" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.PersonalEmergencia" Width="1.5" PointX="0.75" PointY="4.625" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Prioridad" Width="1.5" PointX="3" PointY="18.25" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Protocolo" Width="1.5" PointX="5.25" PointY="13.5" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Requerimiento_Insumo" Width="1.5" PointX="5.25" PointY="9.25" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.RequerimientoInsumo" Width="1.5" PointX="3" PointY="10" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Sintoma" Width="1.5" PointX="3" PointY="0.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TicketEmergencia" Width="1.5" PointX="3" PointY="3.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TicketSalaObservacion" Width="1.5" PointX="0.75" PointY="9" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TicketTraumaShockTopico" Width="1.5" PointX="0.75" PointY="20.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TipoPaciente" Width="1.5" PointX="1.5" PointY="15.625" />
         <EntityTypeShape EntityType="ModelRicardoPalma.Tratamiento" Width="1.5" PointX="0.75" PointY="18.5" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.Triaje" Width="1.5" PointX="8.25" PointY="4.75" />
-        <EntityTypeShape EntityType="ModelRicardoPalma.Usuario" Width="1.5" PointX="5.75" PointY="1.25" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Triaje" Width="1.5" PointX="5.25" PointY="4.75" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.Usuario" Width="1.5" PointX="5.75" PointY="1.125" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Protocolo_Destino" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_Destino" />
+        <AssociationConnector Association="ModelRicardoPalma.FK_Requerimiento_Insumo_Estados" />
+        <AssociationConnector Association="ModelRicardoPalma.FK_Requerimiento_Insumo_Insumo" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Paciente_TipoPaciente" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_Paciente" />
+        <AssociationConnector Association="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Protocolo_Prioridad" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Triaje_Prioridad" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Protocolo_Sintoma" />
+        <AssociationConnector Association="ModelRicardoPalma.FK_Requerimiento_Insumo_RequerimientoInsumo" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Triaje_Sintoma" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_TicketSalaObservacion" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_TicketTraumaShockTopico" />

@@ -12,6 +12,7 @@ namespace RicardoPalma.Models
         public IList<PersonalEmergencia> ListadoMedicoMantenimiento { get; set; }
         public IList<Destino> ListadoDestino { get; set; }
         public IList<Tratamiento> ListadoTratamiento { get; set; }
+        public IList<Insumo> ListadoInsumo { get; set; }
         public IList<BESala> ListadoSala
         {
             get

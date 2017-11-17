@@ -12,6 +12,22 @@
           <Property Name="IdDestino" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Estados">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Insumo">
+          <Key>
+            <PropertyRef Name="IdInsumo" />
+          </Key>
+          <Property Name="IdInsumo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreInsumo" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Marca" Type="varchar" MaxLength="50" />
+          <Property Name="Linea" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Paciente">
           <Key>
             <PropertyRef Name="IdPaciente" />
@@ -55,6 +71,29 @@
           <Property Name="CondicionEgreso" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="DiasAtencion" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Requerimiento_Insumo">
+          <Key>
+            <PropertyRef Name="IdRequerimiento_Insumo" />
+          </Key>
+          <Property Name="IdRequerimiento_Insumo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRequerimientoInsumo" Type="int" Nullable="false" />
+          <Property Name="IdInsumo" Type="int" Nullable="false" />
+          <Property Name="IdSala" Type="int" Nullable="false" />
+          <Property Name="Sala" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Cantidad" Type="int" Nullable="false" />
+          <Property Name="Motivo" Type="varchar" MaxLength="200" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="EsAutorizado" Type="bit" Nullable="false" />
+          <Property Name="FechaAutorizacion" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RequerimientoInsumo">
+          <Key>
+            <PropertyRef Name="IdRequerimientoInsumo" />
+          </Key>
+          <Property Name="IdRequerimientoInsumo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPersonalEmergencia" Type="int" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Sintoma">
           <Key>
             <PropertyRef Name="IdSintoma" />
@@ -81,7 +120,7 @@
           <Key>
             <PropertyRef Name="IdTicketSala" />
           </Key>
-          <Property Name="IdTicketSala" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTicketSala" Type="int" Nullable="false" />
           <Property Name="Ingreso" Type="datetime" />
           <Property Name="Egreso" Type="datetime" />
           <Property Name="Diagnostico" Type="varchar" MaxLength="200" />
@@ -175,6 +214,54 @@
             </Principal>
             <Dependent Role="Protocolo">
               <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requerimiento_Insumo_Estados">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="1" />
+          <End Role="Requerimiento_Insumo" Type="Self.Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requerimiento_Insumo_Insumo">
+          <End Role="Insumo" Type="Self.Insumo" Multiplicity="1" />
+          <End Role="Requerimiento_Insumo" Type="Self.Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insumo">
+              <PropertyRef Name="IdInsumo" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdInsumo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requerimiento_Insumo_RequerimientoInsumo">
+          <End Role="RequerimientoInsumo" Type="Self.RequerimientoInsumo" Multiplicity="1" />
+          <End Role="Requerimiento_Insumo" Type="Self.Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequerimientoInsumo">
+              <PropertyRef Name="IdRequerimientoInsumo" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdRequerimientoInsumo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequerimientoInsumo_PersonalEmergencia">
+          <End Role="PersonalEmergencia" Type="Self.PersonalEmergencia" Multiplicity="1" />
+          <End Role="RequerimientoInsumo" Type="Self.RequerimientoInsumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="RequerimientoInsumo">
+              <PropertyRef Name="IdPersonalEmergencia" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -288,10 +375,14 @@
         </Association>
         <EntityContainer Name="ModelRicardoPalmaStoreContainer">
           <EntitySet Name="Destino" EntityType="Self.Destino" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Insumo" EntityType="Self.Insumo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PersonalEmergencia" EntityType="Self.PersonalEmergencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Prioridad" EntityType="Self.Prioridad" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Protocolo" EntityType="Self.Protocolo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Requerimiento_Insumo" EntityType="Self.Requerimiento_Insumo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequerimientoInsumo" EntityType="Self.RequerimientoInsumo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sintoma" EntityType="Self.Sintoma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketEmergencia" EntityType="Self.TicketEmergencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketSalaObservacion" EntityType="Self.TicketSalaObservacion" Schema="dbo" store:Type="Tables" />
@@ -315,6 +406,22 @@
           <AssociationSet Name="FK_Protocolo_Sintoma" Association="Self.FK_Protocolo_Sintoma">
             <End Role="Sintoma" EntitySet="Sintoma" />
             <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_Estados" Association="Self.FK_Requerimiento_Insumo_Estados">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_Insumo" Association="Self.FK_Requerimiento_Insumo_Insumo">
+            <End Role="Insumo" EntitySet="Insumo" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_RequerimientoInsumo" Association="Self.FK_Requerimiento_Insumo_RequerimientoInsumo">
+            <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequerimientoInsumo_PersonalEmergencia" Association="Self.FK_RequerimientoInsumo_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
           </AssociationSet>
           <AssociationSet Name="FK_TicketEmergencia_Destino" Association="Self.FK_TicketEmergencia_Destino">
             <End Role="Destino" EntitySet="Destino" />
@@ -359,10 +466,14 @@
       <Schema Namespace="ModelRicardoPalma" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ConnectionRicardoPalma" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Destino" EntityType="ModelRicardoPalma.Destino" />
+          <EntitySet Name="Estados" EntityType="ModelRicardoPalma.Estados" />
+          <EntitySet Name="Insumo" EntityType="ModelRicardoPalma.Insumo" />
           <EntitySet Name="Paciente" EntityType="ModelRicardoPalma.Paciente" />
           <EntitySet Name="PersonalEmergencia" EntityType="ModelRicardoPalma.PersonalEmergencia" />
           <EntitySet Name="Prioridad" EntityType="ModelRicardoPalma.Prioridad" />
           <EntitySet Name="Protocolo" EntityType="ModelRicardoPalma.Protocolo" />
+          <EntitySet Name="Requerimiento_Insumo" EntityType="ModelRicardoPalma.Requerimiento_Insumo" />
+          <EntitySet Name="RequerimientoInsumo" EntityType="ModelRicardoPalma.RequerimientoInsumo" />
           <EntitySet Name="Sintoma" EntityType="ModelRicardoPalma.Sintoma" />
           <EntitySet Name="TicketEmergencia" EntityType="ModelRicardoPalma.TicketEmergencia" />
           <EntitySet Name="TicketSalaObservacion" EntityType="ModelRicardoPalma.TicketSalaObservacion" />
@@ -379,6 +490,14 @@
             <End Role="Destino" EntitySet="Destino" />
             <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
           </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_Estados" Association="ModelRicardoPalma.FK_Requerimiento_Insumo_Estados">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_Insumo" Association="ModelRicardoPalma.FK_Requerimiento_Insumo_Insumo">
+            <End Role="Insumo" EntitySet="Insumo" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
+          </AssociationSet>
           <AssociationSet Name="FK_Paciente_TipoPaciente" Association="ModelRicardoPalma.FK_Paciente_TipoPaciente">
             <End Role="TipoPaciente" EntitySet="TipoPaciente" />
             <End Role="Paciente" EntitySet="Paciente" />
@@ -386,6 +505,10 @@
           <AssociationSet Name="FK_TicketEmergencia_Paciente" Association="ModelRicardoPalma.FK_TicketEmergencia_Paciente">
             <End Role="Paciente" EntitySet="Paciente" />
             <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequerimientoInsumo_PersonalEmergencia" Association="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
           </AssociationSet>
           <AssociationSet Name="FK_TicketEmergencia_PersonalEmergencia" Association="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia">
             <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
@@ -402,6 +525,10 @@
           <AssociationSet Name="FK_Protocolo_Sintoma" Association="ModelRicardoPalma.FK_Protocolo_Sintoma">
             <End Role="Sintoma" EntitySet="Sintoma" />
             <End Role="Protocolo" EntitySet="Protocolo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requerimiento_Insumo_RequerimientoInsumo" Association="ModelRicardoPalma.FK_Requerimiento_Insumo_RequerimientoInsumo">
+            <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
+            <End Role="Requerimiento_Insumo" EntitySet="Requerimiento_Insumo" />
           </AssociationSet>
           <AssociationSet Name="FK_Triaje_Sintoma" Association="ModelRicardoPalma.FK_Triaje_Sintoma">
             <End Role="Sintoma" EntitySet="Sintoma" />
@@ -433,6 +560,24 @@
           <NavigationProperty Name="Protocolo" Relationship="ModelRicardoPalma.FK_Protocolo_Destino" FromRole="Destino" ToRole="Protocolo" />
           <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Destino" FromRole="Destino" ToRole="TicketEmergencia" />
         </EntityType>
+        <EntityType Name="Estados">
+          <Key>
+            <PropertyRef Name="IdEstado" />
+          </Key>
+          <Property Name="IdEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Requerimiento_Insumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_Estados" FromRole="Estados" ToRole="Requerimiento_Insumo" />
+        </EntityType>
+        <EntityType Name="Insumo">
+          <Key>
+            <PropertyRef Name="IdInsumo" />
+          </Key>
+          <Property Name="IdInsumo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreInsumo" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Marca" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Linea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Requerimiento_Insumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_Insumo" FromRole="Insumo" ToRole="Requerimiento_Insumo" />
+        </EntityType>
         <EntityType Name="Paciente">
           <Key>
             <PropertyRef Name="IdPaciente" />
@@ -456,6 +601,7 @@
           <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DNI" Type="Int32" Nullable="false" />
           <Property Name="Rol" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RequerimientoInsumo" Relationship="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="RequerimientoInsumo" />
           <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="TicketEmergencia" />
         </EntityType>
         <EntityType Name="Prioridad">
@@ -483,6 +629,34 @@
           <NavigationProperty Name="Destino" Relationship="ModelRicardoPalma.FK_Protocolo_Destino" FromRole="Protocolo" ToRole="Destino" />
           <NavigationProperty Name="Prioridad" Relationship="ModelRicardoPalma.FK_Protocolo_Prioridad" FromRole="Protocolo" ToRole="Prioridad" />
           <NavigationProperty Name="Sintoma" Relationship="ModelRicardoPalma.FK_Protocolo_Sintoma" FromRole="Protocolo" ToRole="Sintoma" />
+        </EntityType>
+        <EntityType Name="Requerimiento_Insumo">
+          <Key>
+            <PropertyRef Name="IdRequerimiento_Insumo" />
+          </Key>
+          <Property Name="IdRequerimiento_Insumo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRequerimientoInsumo" Type="Int32" Nullable="false" />
+          <Property Name="IdInsumo" Type="Int32" Nullable="false" />
+          <Property Name="IdSala" Type="Int32" Nullable="false" />
+          <Property Name="Sala" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cantidad" Type="Int32" Nullable="false" />
+          <Property Name="Motivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="EsAutorizado" Type="Boolean" Nullable="false" />
+          <Property Name="FechaAutorizacion" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Estados" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_Estados" FromRole="Requerimiento_Insumo" ToRole="Estados" />
+          <NavigationProperty Name="Insumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_Insumo" FromRole="Requerimiento_Insumo" ToRole="Insumo" />
+          <NavigationProperty Name="RequerimientoInsumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_RequerimientoInsumo" FromRole="Requerimiento_Insumo" ToRole="RequerimientoInsumo" />
+        </EntityType>
+        <EntityType Name="RequerimientoInsumo">
+          <Key>
+            <PropertyRef Name="IdRequerimientoInsumo" />
+          </Key>
+          <Property Name="IdRequerimientoInsumo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPersonalEmergencia" Type="Int32" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="PersonalEmergencia" Relationship="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" FromRole="RequerimientoInsumo" ToRole="PersonalEmergencia" />
+          <NavigationProperty Name="Requerimiento_Insumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_RequerimientoInsumo" FromRole="RequerimientoInsumo" ToRole="Requerimiento_Insumo" />
         </EntityType>
         <EntityType Name="Sintoma">
           <Key>
@@ -519,7 +693,7 @@
           <Key>
             <PropertyRef Name="IdTicketSala" />
           </Key>
-          <Property Name="IdTicketSala" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTicketSala" Type="Int32" Nullable="false" />
           <Property Name="Ingreso" Type="DateTime" Precision="3" />
           <Property Name="Egreso" Type="DateTime" Precision="3" />
           <Property Name="Diagnostico" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -599,6 +773,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Requerimiento_Insumo_Estados">
+          <End Type="ModelRicardoPalma.Estados" Role="Estados" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Requerimiento_Insumo" Role="Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="IdEstado" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdEstado" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requerimiento_Insumo_Insumo">
+          <End Type="ModelRicardoPalma.Insumo" Role="Insumo" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Requerimiento_Insumo" Role="Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Insumo">
+              <PropertyRef Name="IdInsumo" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdInsumo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Paciente_TipoPaciente">
           <End Type="ModelRicardoPalma.TipoPaciente" Role="TipoPaciente" Multiplicity="1" />
           <End Type="ModelRicardoPalma.Paciente" Role="Paciente" Multiplicity="*" />
@@ -620,6 +818,18 @@
             </Principal>
             <Dependent Role="TicketEmergencia">
               <PropertyRef Name="IdPaciente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequerimientoInsumo_PersonalEmergencia">
+          <End Type="ModelRicardoPalma.PersonalEmergencia" Role="PersonalEmergencia" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.RequerimientoInsumo" Role="RequerimientoInsumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="RequerimientoInsumo">
+              <PropertyRef Name="IdPersonalEmergencia" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -668,6 +878,18 @@
             </Principal>
             <Dependent Role="Protocolo">
               <PropertyRef Name="IdSintoma" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requerimiento_Insumo_RequerimientoInsumo">
+          <End Type="ModelRicardoPalma.RequerimientoInsumo" Role="RequerimientoInsumo" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.Requerimiento_Insumo" Role="Requerimiento_Insumo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequerimientoInsumo">
+              <PropertyRef Name="IdRequerimientoInsumo" />
+            </Principal>
+            <Dependent Role="Requerimiento_Insumo">
+              <PropertyRef Name="IdRequerimientoInsumo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -745,6 +967,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Estados">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Estados">
+              <MappingFragment StoreEntitySet="Estados">
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Insumo">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Insumo">
+              <MappingFragment StoreEntitySet="Insumo">
+                <ScalarProperty Name="Linea" ColumnName="Linea" />
+                <ScalarProperty Name="Marca" ColumnName="Marca" />
+                <ScalarProperty Name="NombreInsumo" ColumnName="NombreInsumo" />
+                <ScalarProperty Name="IdInsumo" ColumnName="IdInsumo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Paciente">
             <EntityTypeMapping TypeName="ModelRicardoPalma.Paciente">
               <MappingFragment StoreEntitySet="Paciente">
@@ -789,6 +1029,31 @@
                 <ScalarProperty Name="IdPrioridad" ColumnName="IdPrioridad" />
                 <ScalarProperty Name="IdSintoma" ColumnName="IdSintoma" />
                 <ScalarProperty Name="IdProtocolo" ColumnName="IdProtocolo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requerimiento_Insumo">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Requerimiento_Insumo">
+              <MappingFragment StoreEntitySet="Requerimiento_Insumo">
+                <ScalarProperty Name="FechaAutorizacion" ColumnName="FechaAutorizacion" />
+                <ScalarProperty Name="EsAutorizado" ColumnName="EsAutorizado" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="Cantidad" ColumnName="Cantidad" />
+                <ScalarProperty Name="Sala" ColumnName="Sala" />
+                <ScalarProperty Name="IdSala" ColumnName="IdSala" />
+                <ScalarProperty Name="IdInsumo" ColumnName="IdInsumo" />
+                <ScalarProperty Name="IdRequerimientoInsumo" ColumnName="IdRequerimientoInsumo" />
+                <ScalarProperty Name="IdRequerimiento_Insumo" ColumnName="IdRequerimiento_Insumo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequerimientoInsumo">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.RequerimientoInsumo">
+              <MappingFragment StoreEntitySet="RequerimientoInsumo">
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="IdPersonalEmergencia" ColumnName="IdPersonalEmergencia" />
+                <ScalarProperty Name="IdRequerimientoInsumo" ColumnName="IdRequerimientoInsumo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -162,22 +162,36 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Business\BLAtencionEmergenciaObservacion.cs" />
+    <Compile Include="Business\BLAtencionEmergenciaTrauma.cs" />
+    <Compile Include="Business\BLLogin.cs" />
+    <Compile Include="Business\BLRequerimientoInsumo.cs" />
+    <Compile Include="Business\BLTriaje.cs" />
     <Compile Include="Controllers\AtencionController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
+    <Compile Include="Controllers\RequerimientoInsumoController.cs" />
     <Compile Include="Controllers\TriajeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\SessionExpireAttribute.cs" />
     <Compile Include="Models\BEAtencionSalaObservacion.cs" />
+    <Compile Include="Models\BEInsumo.cs" />
     <Compile Include="Models\BEReporteAtencionSalaObservacion.cs" />
     <Compile Include="Models\BEReporteAtencionEmergencia.cs" />
+    <Compile Include="Models\BERequerimiento.cs" />
     <Compile Include="Models\BESala.cs" />
     <Compile Include="Models\BEReporteTriaje.cs" />
     <Compile Include="Models\BEAtencionEmergencia.cs" />
     <Compile Include="Models\BETriaje.cs" />
     <Compile Include="Models\Destino.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Estados.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Insumo.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ModelRicardoPalma.Context.cs">
@@ -205,6 +219,12 @@
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Protocolo.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\RequerimientoInsumo.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Requerimiento_Insumo.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Sintoma.cs">
@@ -425,6 +445,7 @@
     <Content Include="Images\no_pdf.png" />
     <Content Include="Images\pdf.png" />
     <Content Include="Images\remove.png" />
+    <Content Include="ScriptsClient\RequerimientoInsumo.js" />
     <Content Include="ScriptsClient\ScriptAtencionSalaObservacion.js" />
     <Content Include="ScriptsClient\ScriptConstantes.js" />
     <Content Include="ScriptsClient\ScriptLogin.js" />
@@ -712,7 +733,9 @@
     <Content Include="StylesClient\StyleLayout.css" />
     <Content Include="StylesClient\StyleLoading.css" />
     <Content Include="StylesClient\StyleLogin.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -723,6 +746,8 @@
     <Content Include="Views\Triaje\GenerarTriaje.cshtml" />
     <Content Include="Views\Atencion\AtencionEmergencia.cshtml" />
     <Content Include="Views\Atencion\AtencionSalaObservacion.cshtml" />
+    <Content Include="Views\RequerimientoInsumo\Insumo.cshtml" />
+    <Content Include="Views\RequerimientoInsumo\Autorizaciones.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

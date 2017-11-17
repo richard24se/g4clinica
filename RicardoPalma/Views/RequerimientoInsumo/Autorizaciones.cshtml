@@ -1,0 +1,92 @@
+﻿@model  RicardoPalma.Models.BEAtencionSalaObservacion
+@{
+    ViewBag.Title = "Autorizaciones";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "fromAutorizaciones" }))
+{
+    @Html.AntiForgeryToken()
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/RequerimientoInsumo.js"></script>
+
+    <fieldset>
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Autorizaciones de Requerimiento de Insumos de Emergencia</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    Fecha desde: <input type='text' class="form-control" id='txtFechaInicio' onkeydown="return false;" />
+                                </td>
+                                <td>
+                                    Fecha hasta: <input type='text' class="form-control" id='txtFechaFin' onkeydown="return false;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Sala: <select id="lsSala" multiple class="form-control" style="height:200px;font-size:11px">
+                                        @foreach (RicardoPalma.Models.BESala item in @Model.ListadoSalaMantenimiento)
+                                        {
+                                            <option value="@item.IdSala">@item.Sala</option>
+                                        }
+                                    </select>
+
+                                </td>
+                                <td>
+                                    Solicitante: <select id="lsSolicitante" multiple class="form-control" style="height:200px;font-size:11px">
+                                        @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicos)
+                                        {
+                                            <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td >
+                                    Aprobar Todos<input type="radio" id="rdTodos" name="Aprobacion" class="form-control"  />
+                                </td>
+                                <td>
+                                    Desaprobar Todos<input type="radio" id="rdNoTodos" name="Aprobacion" class="form-control" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button type="button" id="btnAprobacion" onclick="AutorizarSegunCheck();" class="btn btn-primary btn-sm">Procesar</button>
+                                    <button type="button" id="btnBuscar" onclick="BuscarRequerimientos();" class="btn btn-primary btn-sm">Buscar</button>
+                                    <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Requerimientos</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table id="tblListado" class="order-column display" style="font-size: 12px" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>N° Requerimiento</th>
+                                    <th>Fecha Solicitud</th>
+                                    <th>Solicitante</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </fieldset>
+}
+
