@@ -8,6 +8,8 @@ using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Net.Mail;
+using System.Net;
 
 namespace RicardoPalma.Business
 {
@@ -84,6 +86,10 @@ namespace RicardoPalma.Business
 
 
                 ////aqui es el enviar correo
+                //if (!EnviarCorreo(req.IdRequerimientoInsumo))
+                //{
+                //    throw new Exception("Hubo un error al enviar el correo");
+                //}
 
             }
             catch (EntityException exx)
@@ -103,7 +109,7 @@ namespace RicardoPalma.Business
 
 
 
-
+        #region Requerimiento
         public BEAtencionSalaObservacion InsumoListado()
         {
             BEAtencionSalaObservacion atencion = new BEAtencionSalaObservacion();
@@ -133,7 +139,6 @@ namespace RicardoPalma.Business
             }
             return atencion;
         }
-
 
         public List<BERequerimiento> BuscarRequerimientos(string fechaDesde, string fechaHasta, int Idsolicitante)
         {
@@ -273,7 +278,6 @@ namespace RicardoPalma.Business
             return cadenaHTML.ToString();
         }
 
-
         public void CambiarEstadoInsumo(int idrequerimiento, int idinsumo, int idestado)
         {
             try
@@ -333,5 +337,96 @@ namespace RicardoPalma.Business
                 throw ex;
             }
         }
+
+        private bool EnviarCorreo(int idrequerimiento)
+        {
+            try
+            {
+                Requerimiento_Insumo req = new Requerimiento_Insumo();
+                List<Insumo> insumo = new List<Insumo>();
+                using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
+                {
+                    req = bdRicardo.Requerimiento_Insumo.Where(g => g.IdRequerimientoInsumo == idrequerimiento).First();
+                    //insumo=bdRicardo.Requerimiento_Insumo.Where(g => g.IdRequerimientoInsumo == idrequerimiento).
+                }
+                
+
+
+
+                StringBuilder cadenaHMLT = new StringBuilder();
+                cadenaHMLT.AppendLine("<div  style='width:600px' >" +
+    "<span style='font-weight:bold;font-size:15px'>Notificación: Requerimiento de Insumos de Emergencia</span>" +
+    "<table width='100%' cellspacing='8' cellpadding='0' border='0' align='center' bgcolor='#999999'>" +
+
+    "<tr>" +
+    "<td >N° de Requerimiento:</td>" +
+    "<td ></td>	" +
+    "</tr>" +
+
+    "<tr>	" +
+    "<td >Solicitante: </td>" +
+    "<td ></td>	" +
+    "</tr>" +
+
+
+    "<tr>	" +
+    "<td >Fecha Solicitud: </td>" +
+    "<td ></td>" +
+    "</tr>" +
+
+    "<tr>	" +
+    "<td >Motivo: </td>" +
+    "<td ></td>" +
+    "</tr>" +
+
+    "<tr>" +
+        "<td colspan='2' >" +
+            "<table>		" +
+                "<tr>" +
+                "</tr>			" +
+            "</table>			" +
+        "</td>	" +
+    "</tr>" +
+
+    "<tr>	" +
+    "<td colspan='2'><a href=''>Autorizar Requerimiento</a></td>	" +
+    "</tr>" +
+
+    "</table>" +
+    "</div>");
+
+
+
+                var fromAddress = new MailAddress(ConfigurationManager.AppSettings["strCorreoRemitente"], ConfigurationManager.AppSettings["strNombreRemitente"]);
+                var toAddress = new MailAddress(ConfigurationManager.AppSettings["strCorreoDestinatario"], ConfigurationManager.AppSettings["strNombreDestinatario"]);
+                string fromPassword = ConfigurationManager.AppSettings["strPassword"];
+                const string subject = "Requerimiento Insumo Emergencia";
+                const string body = "holaaaaa";
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+                    Timeout = 20000
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }

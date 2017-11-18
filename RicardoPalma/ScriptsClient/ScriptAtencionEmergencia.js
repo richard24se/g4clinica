@@ -49,7 +49,7 @@ $(document).ready(function () {
     });
 
 
- 
+
 
 });
 
@@ -160,12 +160,14 @@ function EliminarAtencionEmergencia(idticketemergencia) {
 
 
 function BuscarAtencionEmergencia() {
+
+
     vartablaOT = $('#tblListado').DataTable({
         "scrollY": 300,
         "scrollX": true,
         "ajax": {
             url: urlestatica + "Atencion/BuscarAtencionEmergencia",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#hdIdPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": ($("#txtPaciente").val() == '' ? -1 : $("#hdIdPaciente").val()), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {

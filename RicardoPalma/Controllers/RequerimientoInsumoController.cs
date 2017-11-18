@@ -44,7 +44,10 @@ namespace RicardoPalma.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+                if (ex.Message == "Hubo un error al enviar el correo")
+                    return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
