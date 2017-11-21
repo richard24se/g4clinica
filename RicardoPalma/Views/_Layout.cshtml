@@ -79,7 +79,7 @@
                     <li><a id="aActuaAtencionObservacion">Actualizar Atenciones de Sala de Observación</a></li>
                     <li><a id="aActuaRequerimientoInsumo">Requerimientos de Insumos</a></li>
                     <li id="liAutorizar"><a id="aActuaRequerimientoAutorizaciones">Aprobar Requerimientos de Insumos</a></li>
-                    <li><a id="aActuaRequerimientoTurno">Aprobar Estados de Turnos</a></li>
+                    <li id="liAutorizar2"><a id="aActuaRequerimientoTurno">Aprobar Estados de Turnos</a></li>
                     <li><a id="aActuaTurnoMedico">Turnos Médicos de Emergencia</a></li>
                 </ul>
                 <br />
@@ -89,7 +89,8 @@
             user = bdRicardo.Usuario.Where(d => d.IdUsuario == ObtenerSesion).First();
                         if (!user.EsAutorizador) {
                             @: $("#liAutorizar").hide();
-                       }
+                            @: $("#liAutorizar2").hide();
+                            }
                         }
                 </script>
             </div>
