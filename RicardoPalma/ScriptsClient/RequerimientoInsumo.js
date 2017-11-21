@@ -102,23 +102,27 @@ function EliminarFilaGrilla(tabla, rowindex) {
 
 
 function GuardarInsumo() {
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "RequerimientoInsumo/GuardarRequerimientoInsumo",
-        data: { "insumos": JSON.stringify(ArrayInsumo) },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se guardó correctamente. N° de Requerimiento: ' + response.IdRequerimiento);
-                ArrayInsumo = [];
-                $("#txtCantidadInsumo").val(''),
-                $("#txtMotivoInsumo").val(''),
-                LlenarGrillaInsumo('tblListado', ArrayInsumo);
-            } else {
-                alert(response.responseText);
+    if (confirm('Desea Generar el Requerimiento?')) {
+
+        $.ajax({
+            type: 'GET',
+            url: urlestatica + "RequerimientoInsumo/GuardarRequerimientoInsumo",
+            data: { "insumos": JSON.stringify(ArrayInsumo) },
+            dataType: 'json',
+            success: function (response) {
+                if (response != null && response.success && response.responseText == 'OK') {
+                    alert('Se guardó correctamente. N° de Requerimiento: ' + response.IdRequerimiento);
+                    ArrayInsumo = [];
+                    $("#txtCantidadInsumo").val(''),
+                    $("#txtMotivoInsumo").val(''),
+                    LlenarGrillaInsumo('tblListado', ArrayInsumo);
+                } else {
+                    alert(response.responseText);
+                }
             }
-        }
-    });
+        });
+    }
+
 }
 
 
@@ -270,21 +274,28 @@ function AutorizarSegunCheck() {
 
     listaidrequerimiento = listaidrequerimiento.substr(0, listaidrequerimiento.length - 1);
 
+    if (listaidrequerimiento == '') {
+        alert('Debe seleccionar al menos 1 requerimiento para la aprobación');
+        return;
+    }
 
-
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "RequerimientoInsumo/CambiarEstadoInsumoTodos",
-        data: { "listaidrequerimiento": listaidrequerimiento, "checkAprobarTodos": checkAprobarTodos },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se actualizó los estados correctamente');
-            } else {
-                alert(response.responseText);
+    if (confirm('Desea aprobar los cambios?')) {
+        $.ajax({
+            type: 'GET',
+            url: urlestatica + "RequerimientoInsumo/CambiarEstadoInsumoTodos",
+            data: { "listaidrequerimiento": listaidrequerimiento, "checkAprobarTodos": checkAprobarTodos },
+            dataType: 'json',
+            success: function (response) {
+                if (response != null && response.success && response.responseText == 'OK') {
+                    alert('Se actualizó los estados correctamente');
+                } else {
+                    alert(response.responseText);
+                }
             }
-        }
-    });
+        });
+
+
+    }
 
 
 }

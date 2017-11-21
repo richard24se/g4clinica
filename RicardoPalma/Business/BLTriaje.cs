@@ -200,9 +200,9 @@ namespace RicardoPalma.Business
                         //-------------------------------------------
                         if (EsTrauma)
                         {
-                            int dias = Convert.ToInt32(Math.Ceiling(bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Trauma").Average(f => f.DiasAtencion)));
-                            string diagnostico = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Trauma").OrderByDescending(h => h.IdPrioridad).First().Diagnostico;
-                            iddestino = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Trauma").OrderByDescending(h => h.IdPrioridad).First().IdDestino;
+                            int dias = Convert.ToInt32(Math.Ceiling(bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).Average(f => f.DiasAtencion)));
+                            string diagnostico = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).OrderByDescending(h => h.IdPrioridad).First().Diagnostico;
+                            iddestino = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).OrderByDescending(h => h.IdPrioridad).First().IdDestino;
 
                             trauma.Ingreso = DateTime.Now;
                             trauma.Egreso = DateTime.Now.AddDays(dias);
@@ -213,11 +213,11 @@ namespace RicardoPalma.Business
                         }
                         else
                         {
-                            int dias = Convert.ToInt32(Math.Ceiling(bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Topico").Average(f => f.DiasAtencion)));
-                            string diagnostico = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Topico").OrderByDescending(h => h.IdPrioridad).First().Diagnostico;
-                            string condicioningreso = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Topico").OrderByDescending(h => h.IdPrioridad).First().CondicionIngreso;
-                            string condicionegreso = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Topico").OrderByDescending(h => h.IdPrioridad).First().CondicionEgreso;
-                            iddestino = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) && d.Sala == "Topico").OrderByDescending(h => h.IdPrioridad).First().IdDestino;
+                            int dias = Convert.ToInt32(Math.Ceiling(bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).Average(f => f.DiasAtencion)));
+                            string diagnostico = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).OrderByDescending(h => h.IdPrioridad).First().Diagnostico;
+                            string condicioningreso = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).OrderByDescending(h => h.IdPrioridad).First().CondicionIngreso;
+                            string condicionegreso = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma)).OrderByDescending(h => h.IdPrioridad).First().CondicionEgreso;
+                            iddestino = bdRicardo.Protocolo.Where(d => arrSintoma.Contains(d.IdSintoma) ).OrderByDescending(h => h.IdPrioridad).First().IdDestino;
 
                             observacion.Ingreso = DateTime.Now;
                             observacion.Egreso = DateTime.Now.AddDays(dias);

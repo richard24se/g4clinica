@@ -60,29 +60,32 @@ function ModificarTurnoMedico(idDetalleturno, inicio, fin, fecha, turno, idperso
 
 ///guardarmodificar
 function ModificarTurno() {
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "TurnoMedico/ModificarTurno",
-        data: { "iddetalleturno": $('#hdIDetalleTurnoModificar').val(), "idpersonal": $('#lsPersonal').val(), "idestado": $('#lsEstado').val(), "motivo": $('#txtComentario').val() },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se actualizó correctamente');
-                $("#divModificarTurno").modal("hide");
-                $('#hdIDetalleTurnoModificar').val('');
-                $('#spInicio').text('');
-                $('#spFin').text('');
-                $('#spFecha').text('');
-                $('#spTurno').text('');
-                $('#txtComentario').val('');
-                $("#lsPersonal").prop('selectedIndex', 0);
-                $("#lsEstado").prop('selectedIndex', 0);
-                BuscarTurnos();
-            } else {
-                alert(response.responseText);
+    if (confirm('Desea guardar los cambios?')) {
+        $.ajax({
+            type: 'GET',
+            url: urlestatica + "TurnoMedico/ModificarTurno",
+            data: { "iddetalleturno": $('#hdIDetalleTurnoModificar').val(), "idpersonal": $('#lsPersonal').val(), "idestado": $('#lsEstado').val(), "motivo": $('#txtComentario').val() },
+            dataType: 'json',
+            success: function (response) {
+                if (response != null && response.success && response.responseText == 'OK') {
+                    alert('Se actualizó correctamente');
+                    $("#divModificarTurno").modal("hide");
+                    $('#hdIDetalleTurnoModificar').val('');
+                    $('#spInicio').text('');
+                    $('#spFin').text('');
+                    $('#spFecha').text('');
+                    $('#spTurno').text('');
+                    $('#txtComentario').val('');
+                    $("#lsPersonal").prop('selectedIndex', 0);
+                    $("#lsEstado").prop('selectedIndex', 0);
+                    BuscarTurnos();
+                } else {
+                    alert(response.responseText);
+                }
             }
-        }
-    });
+        });
+    }
+
 }
 
 
@@ -98,21 +101,25 @@ function NuevoTurno() {
         alert('El rango máximo permitido de fechas es 30 dias');
     }
     else {
-        $.ajax({
-            type: 'GET',
-            url: urlestatica + "TurnoMedico/NuevoTurno",
-            data: { "fechainicio": $('#txtFechaInicioNuevo').val(), "fechafin": $('#txtFechaFinNuevo').val() },
-            dataType: 'json',
-            success: function (response) {
-                if (response != null && response.success && response.responseText == 'OK') {
-                    alert('Se insertó correctamente');
-                    $("#divNuevoTurno").modal("hide");
-                    BuscarTurnos();
-                } else {
-                    alert(response.responseText);
+
+        if (confirm('Desea guardar los cambios?')) {
+            $.ajax({
+                type: 'GET',
+                url: urlestatica + "TurnoMedico/NuevoTurno",
+                data: { "fechainicio": $('#txtFechaInicioNuevo').val(), "fechafin": $('#txtFechaFinNuevo').val() },
+                dataType: 'json',
+                success: function (response) {
+                    if (response != null && response.success && response.responseText == 'OK') {
+                        alert('Se insertó correctamente');
+                        $("#divNuevoTurno").modal("hide");
+                        BuscarTurnos();
+                    } else {
+                        alert(response.responseText);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
 

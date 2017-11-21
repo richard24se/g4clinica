@@ -102,22 +102,25 @@ function ModificarAtencionEmergencia(idticketemergencia, idmedico, idtratamiento
 
 //modificar
 function GuardarModificarAtencionEmergencia() {
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "Atencion/ModificarAtencionEmergencia",
-        data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "idsala": $('#lsSalaModificar').val() },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se modificó correctamente');
-                $("#divModificarAtencionEmergencia").modal("hide");
-                $('#hdIdTicketEmergencia_Modificar').val('');
-                BuscarAtencionEmergencia();
-            } else {
-                alert(response.responseText);
+    if (confirm('Desea guardar los cambios?')) {
+        $.ajax({
+            type: 'GET',
+            url: urlestatica + "Atencion/ModificarAtencionEmergencia",
+            data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "idsala": $('#lsSalaModificar').val() },
+            dataType: 'json',
+            success: function (response) {
+                if (response != null && response.success && response.responseText == 'OK') {
+                    alert('Se modificó correctamente');
+                    $("#divModificarAtencionEmergencia").modal("hide");
+                    $('#hdIdTicketEmergencia_Modificar').val('');
+                    BuscarAtencionEmergencia();
+                } else {
+                    alert(response.responseText);
+                }
             }
-        }
-    });
+        });
+    }
+
 }
 
 
@@ -167,7 +170,7 @@ function BuscarAtencionEmergencia() {
         "scrollX": true,
         "ajax": {
             url: urlestatica + "Atencion/BuscarAtencionEmergencia",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": ($("#txtPaciente").val() == '' ? -1 : $("#hdIdPaciente").val()), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": ($("#txtPaciente").val() == '' ? -1 : $("#hdIdPaciente").val()), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
@@ -204,7 +207,7 @@ function BuscarAtencionEmergencia() {
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Listado_OT',
+                title: 'Actualizar Atenciones de Emergencia',
                 exportOptions: {
                     //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
                     columns: ':visible'
@@ -217,7 +220,7 @@ function BuscarAtencionEmergencia() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Atenciones',
+            title: 'Actualizar Atenciones de Emergencia',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

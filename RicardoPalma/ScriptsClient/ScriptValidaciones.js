@@ -15,6 +15,7 @@
 var ie = (navigator.appName.indexOf("Microsoft") >= 0)
 function SoloNumerico(e) { var tecla = (ie) ? e.keyCode : e.which; var patron = /^[0-9]*$/; te = String.fromCharCode(tecla); if (!patron.test(te)) { (ie) ? e.keyCode = 0 : e.which = 0; return false; } else return true; }
 
+function SoloTexto(e) { var tecla = (document.all) ? e.keyCode : e.which; if (tecla == 8) return true; var patron = /[A-Za-zñÑ\s]/; te = String.fromCharCode(tecla); if (!patron.test(te)) { (document.all) ? e.keyCode = 0 : e.which = 0; return false; } else return true; }
 
 function SoloDecimal(evt, rangeEnt, rangeDec) {
     //var regex = /^\d{0,5}(\.\d{0,2})?$/;

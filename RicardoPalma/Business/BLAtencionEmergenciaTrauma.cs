@@ -277,7 +277,7 @@ namespace RicardoPalma.Business
             }
         }
 
-        public List<BEReporteAtencionEmergencia> BuscarAtencionEmergencia(string fechaDesde, string fechaHasta, int paciente, int medico, int destino, int sala)
+        public List<BEReporteAtencionEmergencia> BuscarAtencionEmergencia(string fechaDesde, string fechaHasta, int paciente, int medico, int destino)
         {
             List<BEReporteAtencionEmergencia> reporte = new List<BEReporteAtencionEmergencia>();
             DateTime dfechaInicio = DateTime.ParseExact(fechaDesde + " 00:00:00", "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);

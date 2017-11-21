@@ -18,5 +18,6 @@ namespace RicardoPalma.Models
         public string CodigoUsuario { get; set; }
         public string Nombres { get; set; }
         public string Clave { get; set; }
+        public bool EsAutorizador { get; set; }
     }
 }

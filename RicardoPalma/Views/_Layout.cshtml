@@ -45,8 +45,10 @@
             $("#aActuaRequerimientoTurno").attr("href", urlestatica + "RequerimientoTurno/RequerientoTurno");
             $("#aActuaTurnoMedico").attr("href", urlestatica + "TurnoMedico/TurnoMedico");
             $("#aActuaRequerimientoAutorizaciones").attr("href", urlestatica + "RequerimientoInsumo/Autorizaciones");
-            
+
         });
+
+
     </script>
 </head>
 <body>
@@ -76,11 +78,20 @@
                     <li><a id="aActuaAtencionEmergencia">Actualizar Atenciones de Emergencia</a></li>
                     <li><a id="aActuaAtencionObservacion">Actualizar Atenciones de Sala de Observación</a></li>
                     <li><a id="aActuaRequerimientoInsumo">Requerimientos de Insumos</a></li>
-                    <li><a id="aActuaRequerimientoAutorizaciones">Aprobar Requerimientos de Insumos</a></li>
+                    <li id="liAutorizar"><a id="aActuaRequerimientoAutorizaciones">Aprobar Requerimientos de Insumos</a></li>
                     <li><a id="aActuaRequerimientoTurno">Aprobar Estados de Turnos</a></li>
                     <li><a id="aActuaTurnoMedico">Turnos Médicos de Emergencia</a></li>
                 </ul>
                 <br />
+                <script>
+                         @using (RicardoPalma.Models.ConnectionRicardoPalma bdRicardo = new RicardoPalma.Models.ConnectionRicardoPalma()) {
+            RicardoPalma.Models.Usuario user = new RicardoPalma.Models.Usuario();
+            user = bdRicardo.Usuario.Where(d => d.IdUsuario == ObtenerSesion).First();
+                        if (!user.EsAutorizador) {
+                            @: $("#liAutorizar").hide();
+                       }
+                        }
+                </script>
             </div>
 
             <div class="col-sm-10">
@@ -90,5 +101,14 @@
         </div>
     </div>
     <div id="divModal" class="modal modalPrincipal"></div>
+    @functions {
+        public int ObtenerSesion
+        {
+            get
+            {
+                return Convert.ToInt32(Session["Usuario"]);
+            }
+        }
+    }
 </body>
 </html>

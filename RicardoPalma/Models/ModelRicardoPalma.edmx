@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelRicardoPalma.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelRicardoPalma.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Destino">
           <Key>
             <PropertyRef Name="IdDestino" />
@@ -198,8 +198,9 @@
           </Key>
           <Property Name="IdUsuario" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CodigoUsuario" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Nombres" Type="varchar" MaxLength="100" />
+          <Property Name="Nombres" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="EsAutorizador" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_DetalleTurno_PersonalEmergencia">
           <End Role="PersonalEmergencia" Type="Self.PersonalEmergencia" Multiplicity="0..1" />
@@ -882,8 +883,9 @@
           </Key>
           <Property Name="IdUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CodigoUsuario" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Nombres" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Clave" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EsAutorizador" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Protocolo_Destino">
           <End Type="ModelRicardoPalma.Destino" Role="Destino" Multiplicity="1" />
@@ -1340,6 +1342,7 @@
           <EntitySetMapping Name="Usuario">
             <EntityTypeMapping TypeName="ModelRicardoPalma.Usuario">
               <MappingFragment StoreEntitySet="Usuario">
+                <ScalarProperty Name="EsAutorizador" ColumnName="EsAutorizador" />
                 <ScalarProperty Name="Clave" ColumnName="Clave" />
                 <ScalarProperty Name="Nombres" ColumnName="Nombres" />
                 <ScalarProperty Name="CodigoUsuario" ColumnName="CodigoUsuario" />

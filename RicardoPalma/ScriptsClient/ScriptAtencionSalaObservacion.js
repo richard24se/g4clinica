@@ -66,22 +66,25 @@ function ModificarAtencionSalaObservacion(idticketemergencia, idmedico, idtratam
 
 //modificar
 function GuardarModificarAtencionSalaObservacion() {
-    $.ajax({
-        type: 'GET',
-        url: urlestatica + "Atencion/ModificarAtencionSalaObservacion",
-        data: { "idTicketEmergencia": $('#hdIdTicketSalaObservacion_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "diagnostico": $('#txtDiagnosticoModificar').val(), "condicioningreso": $('#txtCondicionIngresoModificar').val(), "condicionegreso": $('#txtCondicionEgresoModificar').val() },
-        dataType: 'json',
-        success: function (response) {
-            if (response != null && response.success && response.responseText == 'OK') {
-                alert('Se modificó correctamente');
-                $("#divModificarAtencionSalaObservacion").modal("hide");
-                $('#hdIdTicketSalaObservacion_Modificar').val('');
-                BuscarAtencionSalaObservacion();
-            } else {
-                alert(response.responseText);
+    if (confirm('Desea guardar los cambios?')) {
+
+        $.ajax({
+            type: 'GET',
+            url: urlestatica + "Atencion/ModificarAtencionSalaObservacion",
+            data: { "idTicketEmergencia": $('#hdIdTicketSalaObservacion_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "diagnostico": $('#txtDiagnosticoModificar').val(), "condicioningreso": $('#txtCondicionIngresoModificar').val(), "condicionegreso": $('#txtCondicionEgresoModificar').val() },
+            dataType: 'json',
+            success: function (response) {
+                if (response != null && response.success && response.responseText == 'OK') {
+                    alert('Se modificó correctamente');
+                    $("#divModificarAtencionSalaObservacion").modal("hide");
+                    $('#hdIdTicketSalaObservacion_Modificar').val('');
+                    BuscarAtencionSalaObservacion();
+                } else {
+                    alert(response.responseText);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 

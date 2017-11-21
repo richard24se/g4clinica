@@ -86,12 +86,12 @@ namespace RicardoPalma.Controllers
         }
 
         [HttpGet]
-        public ActionResult BuscarAtencionEmergencia(string fechaDesde, string fechaHasta, int paciente, int medico, int destino, int sala)
+        public ActionResult BuscarAtencionEmergencia(string fechaDesde, string fechaHasta, int paciente, int medico, int destino)
         {
             List<BEReporteAtencionEmergencia> reporte = new List<BEReporteAtencionEmergencia>();
             try
             {
-                reporte = new BLAtencionEmergenciaTrauma().BuscarAtencionEmergencia(fechaDesde, fechaHasta, paciente, medico, destino, sala);
+                reporte = new BLAtencionEmergenciaTrauma().BuscarAtencionEmergencia(fechaDesde, fechaHasta, paciente, medico, destino);
                 return Json(new { success = true, responseText = "OK", data = reporte }, JsonRequestBehavior.AllowGet);
 
             }

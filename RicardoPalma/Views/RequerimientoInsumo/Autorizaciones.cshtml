@@ -26,10 +26,10 @@
                         <table width="100%">
                             <tr>
                                 <td>
-                                    Fecha desde: <input type='text' class="form-control" id='txtFechaInicio' onkeydown="return false;" /> 
+                                    Fecha desde: <input type='text' class="form-control" id='txtFechaInicio' onkeydown="return false;" />
                                 </td>
                                 <td>
-                                    Fecha hasta: <input type='text' class="form-control" id='txtFechaFin' onkeydown="return false;" /> 
+                                    Fecha hasta: <input type='text' class="form-control" id='txtFechaFin' onkeydown="return false;" />
                                 </td>
                             </tr>
                             <tr>
@@ -40,7 +40,7 @@
                                             <option value="@item.IdSala">@item.Sala</option>
                                         }
                                     </select>
-
+                                    <br />
                                 </td>
                                 <td>
                                     Solicitante: <select id="lsSolicitante" class="form-control" style="width:200px;font-size:11px">
@@ -49,23 +49,26 @@
                                             <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
                                         }
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="well well-sm">
-                                        Aprobar Seleccionados<input type="radio" id="rdTodos" checked="checked" name="Aprobacion" class="check-mark" /> <br />
-                                        Desaprobar Seleccionados<input type="radio"  id="rdNoTodos" name="Aprobacion" class="check-mark" />
-                                        <br />
-                                        <br />
-                                        <button type="button" id="btnAprobacion" onclick="AutorizarSegunCheck();" class="btn btn-primary btn-sm">Procesar</button>
-                                    </div>
+                                    <br />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                     <button type="button" id="btnBuscar" onclick="BuscarAtencionEmergencia();" class="btn btn-primary btn-sm">Buscar</button>
                                     <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
+                                    <br />
+                                    <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="well well-sm">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aprobar Seleccionados&nbsp;<input type="radio" id="rdTodos" checked="checked" name="Aprobacion" class="check-mark" /> <br />
+                                        Desaprobar Seleccionados&nbsp;<input type="radio" id="rdNoTodos" name="Aprobacion" class="check-mark" />
+                                        <br />
+                                        <br />
+                                        <button type="button" id="btnAprobacion" onclick="AutorizarSegunCheck();" class="btn btn-primary btn-sm">Procesar</button>
+                                    </div>
                                 </td>
                             </tr>
                         </table>

@@ -17,25 +17,25 @@ $(document).ready(function () {
         window.location.href = urlestatica + 'Principal/Index';
     });
 
-    $('#txtSintoma').typeahead({
-        source: function (query, process) {
-            return $.get(urlestatica + 'Triaje/GetSintomaById', { sintoma: query }, function (data) {
-                if (data != null && data.success && data.responseText == 'OK') {
-                    data = $.parseJSON(data.data);
-                    return process(data);
-                }
-                else
-                    alert(data.responseText);
-            });
-        },
-        limit: 10,
-        displayText: function (item) { return item.name; },
-        afterSelect: function (item) {
-            $('#hdIdSintoma').val(item.id);
-        }
+    //$('#txtSintoma').typeahead({
+    //    source: function (query, process) {
+    //        return $.get(urlestatica + 'Triaje/GetSintomaById', { sintoma: query }, function (data) {
+    //            if (data != null && data.success && data.responseText == 'OK') {
+    //                data = $.parseJSON(data.data);
+    //                return process(data);
+    //            }
+    //            else
+    //                alert(data.responseText);
+    //        });
+    //    },
+    //    limit: 10,
+    //    displayText: function (item) { return item.name; },
+    //    afterSelect: function (item) {
+    //        $('#hdIdSintoma').val(item.id);
+    //    }
 
 
-    });
+    //});
 
 });
 
@@ -57,8 +57,8 @@ function BuscarPaciente() {
                     $('#txtTipoPaciente').text(response.tipoPaciente);
                 }
                 else if (response != null && response.success && response.responseText == 'NOPACIENTE') {
-                    alert('El paciente con DNI ' + $('#txtDNI').val() + ' no se encuentra registrado.\n')
-                    if (confirm('Desea ingresar un nuevo paciente?')) {
+                    //alert('El paciente con DNI ' + $('#txtDNI').val() + ' no se encuentra registrado.\n')
+                    if (confirm('El paciente con DNI ' + $('#txtDNI').val() + ' no se encuentra registrado, ¿Desea registrarlo?')) {
                         $('#txtNuevoNombrePaciente').val('');
                         $('#txtNuevoPaterno').val('');
                         $('#txtNuevoMaterno').val('');
@@ -129,12 +129,12 @@ function GenerarTriaje() {
     if ($("#txtDNI").val().trim() == '' || $('#txtNombrePaciente').text() == '') {
         alert('Debe buscar un paciente');
     }
-    else if ($("#txtSintoma").val() == '') {
-        alert('Debe tipear un síntoma');
+    else if ($("#lsSintomas").val() == '') {
+        alert('Debe escoger un síntoma');
     }
     else {
         if (confirm('Desea grabar la información?')) {
-            GenerarGrilla($("#hdIdSintoma").val());
+            GenerarGrilla($("#lsSintomas").val());
         }
     }
 
@@ -182,7 +182,7 @@ function GenerarGrilla(sintomas) {
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Listado_OT',
+                title: 'Generar Informe de Triaje',
                 exportOptions: {
                     //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
                     columns: ':visible'
@@ -195,7 +195,7 @@ function GenerarGrilla(sintomas) {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Órdenes de Trabajo',
+            title: 'Generar Informe de Triaje',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {
