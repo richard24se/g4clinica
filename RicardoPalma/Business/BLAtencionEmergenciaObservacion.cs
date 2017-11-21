@@ -38,6 +38,7 @@ namespace RicardoPalma.Business
 
                     atencion.ListadoTratamiento = bdRicardo.Tratamiento.ToList();
                     atencion.ListadoMedicoMantenimiento = bdRicardo.PersonalEmergencia.ToList();
+                    atencion.ListadoEstados = bdRicardo.Estados.ToList();                    
                 }
             }
             catch (EntityException exx)

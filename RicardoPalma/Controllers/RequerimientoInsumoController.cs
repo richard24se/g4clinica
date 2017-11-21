@@ -28,14 +28,29 @@ namespace RicardoPalma.Controllers
         }
 
 
+        public ActionResult AprobarPorCorreo(string id)
+        {
+            try
+            {
+                TempData["Id"] = id;
+                new BLRequerimientoInsumo().CambiarEstadoInsumoTodos(id, true);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
         [HttpGet]
-        public ActionResult GuardarRequerimientoInsumo(int idAprobador, string insumos)
+        public ActionResult GuardarRequerimientoInsumo(string insumos)
         {
             int id = 0;
             try
             {
-                id = new BLRequerimientoInsumo().GuardarRequerimientoInsumo(idAprobador, insumos);
+                id = new BLRequerimientoInsumo().GuardarRequerimientoInsumo(Convert.ToInt32( Session["Usuario"]), insumos);
                 return Json(new { success = true, responseText = "OK", IdRequerimiento = id }, JsonRequestBehavior.AllowGet);
             }
             catch (TimeoutException exx)
@@ -44,7 +59,10 @@ namespace RicardoPalma.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+                if (ex.Message == "Hubo un error al enviar el correo")
+                    return Json(new { success = false, responseText = ex.Message }, JsonRequestBehavior.AllowGet);
+                else
+                    return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
             }
         }
         #endregion

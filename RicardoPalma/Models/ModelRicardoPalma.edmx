@@ -4,13 +4,24 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ModelRicardoPalma.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ModelRicardoPalma.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Destino">
           <Key>
             <PropertyRef Name="IdDestino" />
           </Key>
           <Property Name="IdDestino" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="DetalleTurno">
+          <Key>
+            <PropertyRef Name="IdDetalleTurno" />
+          </Key>
+          <Property Name="IdDetalleTurno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdTurno" Type="int" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
+          <Property Name="IdPersonalEmergencia" Type="int" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="Comentario" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="Estados">
           <Key>
@@ -81,7 +92,7 @@
           <Property Name="IdSala" Type="int" Nullable="false" />
           <Property Name="Sala" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Cantidad" Type="int" Nullable="false" />
-          <Property Name="Motivo" Type="varchar" MaxLength="200" />
+          <Property Name="Motivo" Type="varchar" MaxLength="300" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
           <Property Name="EsAutorizado" Type="bit" Nullable="false" />
           <Property Name="FechaAutorizacion" Type="datetime" />
@@ -93,6 +104,18 @@
           <Property Name="IdRequerimientoInsumo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdPersonalEmergencia" Type="int" Nullable="false" />
           <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequerimientoTurno">
+          <Key>
+            <PropertyRef Name="IdRequerimientoTurno" />
+          </Key>
+          <Property Name="IdRequerimientoTurno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPersonalEmergencia" Type="int" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="datetime" Nullable="false" />
+          <Property Name="HoraInicio" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="HoraFin" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Motivo" Type="varchar" MaxLength="100" />
+          <Property Name="EsAprobado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Sintoma">
           <Key>
@@ -120,7 +143,7 @@
           <Key>
             <PropertyRef Name="IdTicketSala" />
           </Key>
-          <Property Name="IdTicketSala" Type="int" Nullable="false" />
+          <Property Name="IdTicketSala" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ingreso" Type="datetime" />
           <Property Name="Egreso" Type="datetime" />
           <Property Name="Diagnostico" Type="varchar" MaxLength="200" />
@@ -160,6 +183,15 @@
           <Property Name="IdTicketEmergencia" Type="int" Nullable="false" />
           <Property Name="IdSintoma" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Turno">
+          <Key>
+            <PropertyRef Name="IdTurno" />
+          </Key>
+          <Property Name="IdTurno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreTurno" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Rango1" Type="varchar" MaxLength="8" Nullable="false" />
+          <Property Name="Rango2" Type="varchar" MaxLength="8" Nullable="false" />
+        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -169,6 +201,30 @@
           <Property Name="Nombres" Type="varchar" MaxLength="100" />
           <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_DetalleTurno_PersonalEmergencia">
+          <End Role="PersonalEmergencia" Type="Self.PersonalEmergencia" Multiplicity="0..1" />
+          <End Role="DetalleTurno" Type="Self.DetalleTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="DetalleTurno">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleTurno_Turno1">
+          <End Role="Turno" Type="Self.Turno" Multiplicity="1" />
+          <End Role="DetalleTurno" Type="Self.DetalleTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turno">
+              <PropertyRef Name="IdTurno" />
+            </Principal>
+            <Dependent Role="DetalleTurno">
+              <PropertyRef Name="IdTurno" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Paciente_TipoPaciente">
           <End Role="TipoPaciente" Type="Self.TipoPaciente" Multiplicity="1" />
           <End Role="Paciente" Type="Self.Paciente" Multiplicity="*" />
@@ -261,6 +317,18 @@
               <PropertyRef Name="IdPersonalEmergencia" />
             </Principal>
             <Dependent Role="RequerimientoInsumo">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequerimientoTurno_PersonalEmergencia">
+          <End Role="PersonalEmergencia" Type="Self.PersonalEmergencia" Multiplicity="1" />
+          <End Role="RequerimientoTurno" Type="Self.RequerimientoTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="RequerimientoTurno">
               <PropertyRef Name="IdPersonalEmergencia" />
             </Dependent>
           </ReferentialConstraint>
@@ -375,6 +443,7 @@
         </Association>
         <EntityContainer Name="ModelRicardoPalmaStoreContainer">
           <EntitySet Name="Destino" EntityType="Self.Destino" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DetalleTurno" EntityType="Self.DetalleTurno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insumo" EntityType="Self.Insumo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Paciente" EntityType="Self.Paciente" Schema="dbo" store:Type="Tables" />
@@ -383,6 +452,7 @@
           <EntitySet Name="Protocolo" EntityType="Self.Protocolo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Requerimiento_Insumo" EntityType="Self.Requerimiento_Insumo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RequerimientoInsumo" EntityType="Self.RequerimientoInsumo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequerimientoTurno" EntityType="Self.RequerimientoTurno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sintoma" EntityType="Self.Sintoma" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketEmergencia" EntityType="Self.TicketEmergencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TicketSalaObservacion" EntityType="Self.TicketSalaObservacion" Schema="dbo" store:Type="Tables" />
@@ -390,7 +460,16 @@
           <EntitySet Name="TipoPaciente" EntityType="Self.TipoPaciente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tratamiento" EntityType="Self.Tratamiento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Triaje" EntityType="Self.Triaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turno" EntityType="Self.Turno" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Usuario" EntityType="Self.Usuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DetalleTurno_PersonalEmergencia" Association="Self.FK_DetalleTurno_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="DetalleTurno" EntitySet="DetalleTurno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleTurno_Turno1" Association="Self.FK_DetalleTurno_Turno1">
+            <End Role="Turno" EntitySet="Turno" />
+            <End Role="DetalleTurno" EntitySet="DetalleTurno" />
+          </AssociationSet>
           <AssociationSet Name="FK_Paciente_TipoPaciente" Association="Self.FK_Paciente_TipoPaciente">
             <End Role="TipoPaciente" EntitySet="TipoPaciente" />
             <End Role="Paciente" EntitySet="Paciente" />
@@ -422,6 +501,10 @@
           <AssociationSet Name="FK_RequerimientoInsumo_PersonalEmergencia" Association="Self.FK_RequerimientoInsumo_PersonalEmergencia">
             <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
             <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequerimientoTurno_PersonalEmergencia" Association="Self.FK_RequerimientoTurno_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="RequerimientoTurno" EntitySet="RequerimientoTurno" />
           </AssociationSet>
           <AssociationSet Name="FK_TicketEmergencia_Destino" Association="Self.FK_TicketEmergencia_Destino">
             <End Role="Destino" EntitySet="Destino" />
@@ -466,6 +549,7 @@
       <Schema Namespace="ModelRicardoPalma" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="ConnectionRicardoPalma" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Destino" EntityType="ModelRicardoPalma.Destino" />
+          <EntitySet Name="DetalleTurno" EntityType="ModelRicardoPalma.DetalleTurno" />
           <EntitySet Name="Estados" EntityType="ModelRicardoPalma.Estados" />
           <EntitySet Name="Insumo" EntityType="ModelRicardoPalma.Insumo" />
           <EntitySet Name="Paciente" EntityType="ModelRicardoPalma.Paciente" />
@@ -474,6 +558,7 @@
           <EntitySet Name="Protocolo" EntityType="ModelRicardoPalma.Protocolo" />
           <EntitySet Name="Requerimiento_Insumo" EntityType="ModelRicardoPalma.Requerimiento_Insumo" />
           <EntitySet Name="RequerimientoInsumo" EntityType="ModelRicardoPalma.RequerimientoInsumo" />
+          <EntitySet Name="RequerimientoTurno" EntityType="ModelRicardoPalma.RequerimientoTurno" />
           <EntitySet Name="Sintoma" EntityType="ModelRicardoPalma.Sintoma" />
           <EntitySet Name="TicketEmergencia" EntityType="ModelRicardoPalma.TicketEmergencia" />
           <EntitySet Name="TicketSalaObservacion" EntityType="ModelRicardoPalma.TicketSalaObservacion" />
@@ -481,6 +566,7 @@
           <EntitySet Name="TipoPaciente" EntityType="ModelRicardoPalma.TipoPaciente" />
           <EntitySet Name="Tratamiento" EntityType="ModelRicardoPalma.Tratamiento" />
           <EntitySet Name="Triaje" EntityType="ModelRicardoPalma.Triaje" />
+          <EntitySet Name="Turno" EntityType="ModelRicardoPalma.Turno" />
           <EntitySet Name="Usuario" EntityType="ModelRicardoPalma.Usuario" />
           <AssociationSet Name="FK_Protocolo_Destino" Association="ModelRicardoPalma.FK_Protocolo_Destino">
             <End Role="Destino" EntitySet="Destino" />
@@ -489,6 +575,14 @@
           <AssociationSet Name="FK_TicketEmergencia_Destino" Association="ModelRicardoPalma.FK_TicketEmergencia_Destino">
             <End Role="Destino" EntitySet="Destino" />
             <End Role="TicketEmergencia" EntitySet="TicketEmergencia" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleTurno_PersonalEmergencia" Association="ModelRicardoPalma.FK_DetalleTurno_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="DetalleTurno" EntitySet="DetalleTurno" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DetalleTurno_Turno1" Association="ModelRicardoPalma.FK_DetalleTurno_Turno1">
+            <End Role="Turno" EntitySet="Turno" />
+            <End Role="DetalleTurno" EntitySet="DetalleTurno" />
           </AssociationSet>
           <AssociationSet Name="FK_Requerimiento_Insumo_Estados" Association="ModelRicardoPalma.FK_Requerimiento_Insumo_Estados">
             <End Role="Estados" EntitySet="Estados" />
@@ -509,6 +603,10 @@
           <AssociationSet Name="FK_RequerimientoInsumo_PersonalEmergencia" Association="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia">
             <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
             <End Role="RequerimientoInsumo" EntitySet="RequerimientoInsumo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequerimientoTurno_PersonalEmergencia" Association="ModelRicardoPalma.FK_RequerimientoTurno_PersonalEmergencia">
+            <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
+            <End Role="RequerimientoTurno" EntitySet="RequerimientoTurno" />
           </AssociationSet>
           <AssociationSet Name="FK_TicketEmergencia_PersonalEmergencia" Association="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia">
             <End Role="PersonalEmergencia" EntitySet="PersonalEmergencia" />
@@ -560,6 +658,19 @@
           <NavigationProperty Name="Protocolo" Relationship="ModelRicardoPalma.FK_Protocolo_Destino" FromRole="Destino" ToRole="Protocolo" />
           <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_Destino" FromRole="Destino" ToRole="TicketEmergencia" />
         </EntityType>
+        <EntityType Name="DetalleTurno">
+          <Key>
+            <PropertyRef Name="IdDetalleTurno" />
+          </Key>
+          <Property Name="IdDetalleTurno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdTurno" Type="Int32" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdPersonalEmergencia" Type="Int32" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="Comentario" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PersonalEmergencia" Relationship="ModelRicardoPalma.FK_DetalleTurno_PersonalEmergencia" FromRole="DetalleTurno" ToRole="PersonalEmergencia" />
+          <NavigationProperty Name="Turno" Relationship="ModelRicardoPalma.FK_DetalleTurno_Turno1" FromRole="DetalleTurno" ToRole="Turno" />
+        </EntityType>
         <EntityType Name="Estados">
           <Key>
             <PropertyRef Name="IdEstado" />
@@ -601,7 +712,9 @@
           <Property Name="ApellidoMaterno" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DNI" Type="Int32" Nullable="false" />
           <Property Name="Rol" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DetalleTurno" Relationship="ModelRicardoPalma.FK_DetalleTurno_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="DetalleTurno" />
           <NavigationProperty Name="RequerimientoInsumo" Relationship="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="RequerimientoInsumo" />
+          <NavigationProperty Name="RequerimientoTurno" Relationship="ModelRicardoPalma.FK_RequerimientoTurno_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="RequerimientoTurno" />
           <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" FromRole="PersonalEmergencia" ToRole="TicketEmergencia" />
         </EntityType>
         <EntityType Name="Prioridad">
@@ -640,7 +753,7 @@
           <Property Name="IdSala" Type="Int32" Nullable="false" />
           <Property Name="Sala" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Cantidad" Type="Int32" Nullable="false" />
-          <Property Name="Motivo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Motivo" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <Property Name="EsAutorizado" Type="Boolean" Nullable="false" />
           <Property Name="FechaAutorizacion" Type="DateTime" Precision="3" />
@@ -657,6 +770,19 @@
           <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="PersonalEmergencia" Relationship="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" FromRole="RequerimientoInsumo" ToRole="PersonalEmergencia" />
           <NavigationProperty Name="Requerimiento_Insumo" Relationship="ModelRicardoPalma.FK_Requerimiento_Insumo_RequerimientoInsumo" FromRole="RequerimientoInsumo" ToRole="Requerimiento_Insumo" />
+        </EntityType>
+        <EntityType Name="RequerimientoTurno">
+          <Key>
+            <PropertyRef Name="IdRequerimientoTurno" />
+          </Key>
+          <Property Name="IdRequerimientoTurno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPersonalEmergencia" Type="Int32" Nullable="false" />
+          <Property Name="FechaSolicitud" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="HoraInicio" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="HoraFin" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Motivo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EsAprobado" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PersonalEmergencia" Relationship="ModelRicardoPalma.FK_RequerimientoTurno_PersonalEmergencia" FromRole="RequerimientoTurno" ToRole="PersonalEmergencia" />
         </EntityType>
         <EntityType Name="Sintoma">
           <Key>
@@ -693,7 +819,7 @@
           <Key>
             <PropertyRef Name="IdTicketSala" />
           </Key>
-          <Property Name="IdTicketSala" Type="Int32" Nullable="false" />
+          <Property Name="IdTicketSala" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Ingreso" Type="DateTime" Precision="3" />
           <Property Name="Egreso" Type="DateTime" Precision="3" />
           <Property Name="Diagnostico" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
@@ -740,6 +866,16 @@
           <NavigationProperty Name="Sintoma" Relationship="ModelRicardoPalma.FK_Triaje_Sintoma" FromRole="Triaje" ToRole="Sintoma" />
           <NavigationProperty Name="TicketEmergencia" Relationship="ModelRicardoPalma.FK_Triaje_TicketEmergencia" FromRole="Triaje" ToRole="TicketEmergencia" />
         </EntityType>
+        <EntityType Name="Turno">
+          <Key>
+            <PropertyRef Name="IdTurno" />
+          </Key>
+          <Property Name="IdTurno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreTurno" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Rango1" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="Rango2" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DetalleTurno" Relationship="ModelRicardoPalma.FK_DetalleTurno_Turno1" FromRole="Turno" ToRole="DetalleTurno" />
+        </EntityType>
         <EntityType Name="Usuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -770,6 +906,30 @@
             </Principal>
             <Dependent Role="TicketEmergencia">
               <PropertyRef Name="IdDestino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleTurno_PersonalEmergencia">
+          <End Type="ModelRicardoPalma.PersonalEmergencia" Role="PersonalEmergencia" Multiplicity="0..1" />
+          <End Type="ModelRicardoPalma.DetalleTurno" Role="DetalleTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="DetalleTurno">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DetalleTurno_Turno1">
+          <End Type="ModelRicardoPalma.Turno" Role="Turno" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.DetalleTurno" Role="DetalleTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turno">
+              <PropertyRef Name="IdTurno" />
+            </Principal>
+            <Dependent Role="DetalleTurno">
+              <PropertyRef Name="IdTurno" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -829,6 +989,18 @@
               <PropertyRef Name="IdPersonalEmergencia" />
             </Principal>
             <Dependent Role="RequerimientoInsumo">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequerimientoTurno_PersonalEmergencia">
+          <End Type="ModelRicardoPalma.PersonalEmergencia" Role="PersonalEmergencia" Multiplicity="1" />
+          <End Type="ModelRicardoPalma.RequerimientoTurno" Role="RequerimientoTurno" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PersonalEmergencia">
+              <PropertyRef Name="IdPersonalEmergencia" />
+            </Principal>
+            <Dependent Role="RequerimientoTurno">
               <PropertyRef Name="IdPersonalEmergencia" />
             </Dependent>
           </ReferentialConstraint>
@@ -967,6 +1139,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="DetalleTurno">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.DetalleTurno">
+              <MappingFragment StoreEntitySet="DetalleTurno">
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="IdPersonalEmergencia" ColumnName="IdPersonalEmergencia" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="IdTurno" ColumnName="IdTurno" />
+                <ScalarProperty Name="IdDetalleTurno" ColumnName="IdDetalleTurno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Estados">
             <EntityTypeMapping TypeName="ModelRicardoPalma.Estados">
               <MappingFragment StoreEntitySet="Estados">
@@ -1057,6 +1241,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="RequerimientoTurno">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.RequerimientoTurno">
+              <MappingFragment StoreEntitySet="RequerimientoTurno">
+                <ScalarProperty Name="EsAprobado" ColumnName="EsAprobado" />
+                <ScalarProperty Name="Motivo" ColumnName="Motivo" />
+                <ScalarProperty Name="HoraFin" ColumnName="HoraFin" />
+                <ScalarProperty Name="HoraInicio" ColumnName="HoraInicio" />
+                <ScalarProperty Name="FechaSolicitud" ColumnName="FechaSolicitud" />
+                <ScalarProperty Name="IdPersonalEmergencia" ColumnName="IdPersonalEmergencia" />
+                <ScalarProperty Name="IdRequerimientoTurno" ColumnName="IdRequerimientoTurno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Sintoma">
             <EntityTypeMapping TypeName="ModelRicardoPalma.Sintoma">
               <MappingFragment StoreEntitySet="Sintoma">
@@ -1127,6 +1324,16 @@
                 <ScalarProperty Name="IdTicketEmergencia" ColumnName="IdTicketEmergencia" />
                 <ScalarProperty Name="IdPrioridad" ColumnName="IdPrioridad" />
                 <ScalarProperty Name="IdTriaje" ColumnName="IdTriaje" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turno">
+            <EntityTypeMapping TypeName="ModelRicardoPalma.Turno">
+              <MappingFragment StoreEntitySet="Turno">
+                <ScalarProperty Name="Rango2" ColumnName="Rango2" />
+                <ScalarProperty Name="Rango1" ColumnName="Rango1" />
+                <ScalarProperty Name="NombreTurno" ColumnName="NombreTurno" />
+                <ScalarProperty Name="IdTurno" ColumnName="IdTurno" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

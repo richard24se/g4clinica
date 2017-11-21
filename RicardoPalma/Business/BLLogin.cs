@@ -12,7 +12,7 @@ namespace RicardoPalma.Business
     public class BLLogin
     {
 
-        public bool ValidarUsuario(string sUsuario, string sPassword, ref string sNombres)
+        public bool ValidarUsuario(string sUsuario, string sPassword, ref string sNombres,ref int cod)
         {
             bool blResult = false;
             try
@@ -29,6 +29,7 @@ namespace RicardoPalma.Business
                 if (blResult)
                 {
                     sNombres = bUsuario.Nombres;
+                    cod = bUsuario.IdUsuario;
                 }
 
             }

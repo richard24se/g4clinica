@@ -25,7 +25,7 @@ function AgregarInsumo() {
 
 
     $.each(ArrayInsumo, function (index, value) {
-        if (value.idinsumo == $("#lsInsumo").val()) {
+        if (value.idinsumo == $("#lsInsumo").val() && value.eseliminado == 0) {
             alert('el insumo ' + $("#lsInsumo option:selected").text() + ' ya ha sido agregado');
             valor = false;
         }
@@ -105,7 +105,7 @@ function GuardarInsumo() {
     $.ajax({
         type: 'GET',
         url: urlestatica + "RequerimientoInsumo/GuardarRequerimientoInsumo",
-        data: { "idAprobador": $('#lsAprobador').val(), "insumos": JSON.stringify(ArrayInsumo) },
+        data: { "insumos": JSON.stringify(ArrayInsumo) },
         dataType: 'json',
         success: function (response) {
             if (response != null && response.success && response.responseText == 'OK') {
@@ -347,7 +347,7 @@ function BuscarAtencionEmergencia() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Órdenes de Trabajo',
+            title: 'Requerimientos',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

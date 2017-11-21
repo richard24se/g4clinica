@@ -151,7 +151,7 @@ namespace RicardoPalma.Business
             }
         }
 
-        public void ModificarAtencionEmergencia(int idTicketEmergencia, int idmedico, int idtratamiento, string diagnostico, int idsala)
+        public void ModificarAtencionEmergencia(int idTicketEmergencia, int idmedico, int idtratamiento, int idsala)
         {
             TicketEmergencia bTicket = new TicketEmergencia();
             try
@@ -170,7 +170,7 @@ namespace RicardoPalma.Business
                             TicketTraumaShockTopico trauma = new TicketTraumaShockTopico();
                             trauma.Ingreso = DateTime.Now;
                             trauma.EsTraumaShock = true;
-                            trauma.Diagnostico = diagnostico;
+                            //trauma.Diagnostico = diagnostico;
                             bdRicardo.TicketTraumaShockTopico.Add(trauma);
                             bdRicardo.SaveChanges();
 
@@ -188,7 +188,7 @@ namespace RicardoPalma.Business
                         else
                         {
                             TicketTraumaShockTopico trauma = bdRicardo.TicketTraumaShockTopico.Where(g => g.IdTicketTrauma == bTicket.IdTicketTrauma).First();
-                            trauma.Diagnostico = diagnostico;
+                            //trauma.Diagnostico = diagnostico;
                             bdRicardo.SaveChanges();
                         }
                     }
@@ -199,7 +199,7 @@ namespace RicardoPalma.Business
                             //registrar a sala topico
                             TicketSalaObservacion observacion = new TicketSalaObservacion();
                             observacion.Ingreso = DateTime.Now;
-                            observacion.Diagnostico = diagnostico;
+                            //observacion.Diagnostico = diagnostico;
                             bdRicardo.TicketSalaObservacion.Add(observacion);
                             bdRicardo.SaveChanges();
 
@@ -217,7 +217,7 @@ namespace RicardoPalma.Business
                         else
                         {
                             TicketSalaObservacion observacion = bdRicardo.TicketSalaObservacion.Where(g => g.IdTicketSala == bTicket.IdTicketSala).First();
-                            observacion.Diagnostico = diagnostico;
+                            //observacion.Diagnostico = diagnostico;
                             bdRicardo.SaveChanges();
                         }
                     }
@@ -293,8 +293,8 @@ namespace RicardoPalma.Business
                             d.Paciente.IdPaciente == (paciente == -1 ? d.Paciente.IdPaciente : paciente) &&
                             d.PersonalEmergencia.IdPersonalEmergencia == (medico == -1 ? d.PersonalEmergencia.IdPersonalEmergencia : medico) &&
                             d.Destino.IdDestino == (destino == -1 ? d.Destino.IdDestino : destino) &&
-                            d.IdTicketTrauma == (sala == -1 || sala == 1 ? d.IdTicketTrauma : null) &&
-                            d.IdTicketSala == (sala == -1 || sala == 2 ? d.IdTicketSala : null)
+                            d.IdTicketTrauma != null
+                        //d.IdTicketSala == (sala == -1 || sala == 2 ? d.IdTicketSala : null)
                             ).Count() > 0)
                     {
 
@@ -304,8 +304,8 @@ namespace RicardoPalma.Business
                             d.Paciente.IdPaciente == (paciente == -1 ? d.Paciente.IdPaciente : paciente) &&
                             d.PersonalEmergencia.IdPersonalEmergencia == (medico == -1 ? d.PersonalEmergencia.IdPersonalEmergencia : medico) &&
                             d.Destino.IdDestino == (destino == -1 ? d.Destino.IdDestino : destino) &&
-                            d.IdTicketTrauma == (sala == -1 || sala == 1 ? d.IdTicketTrauma : null) &&
-                            d.IdTicketSala == (sala == -1 || sala == 2 ? d.IdTicketSala : null)
+                            d.IdTicketTrauma != null
+                            //d.IdTicketSala == (sala == -1 || sala == 2 ? d.IdTicketSala : null)
                             ).Select(g => new
                             {
                                 IdTicketEmergencia = g.IdTicketEmergencia,
@@ -325,7 +325,7 @@ namespace RicardoPalma.Business
 
                         reporte = resultado.Select(g => new BEReporteAtencionEmergencia()
                         {
-                            Registrar = "<button type='button' id='btnRegistrarAtencion' onclick=\"RegistrarAtencionEmergencia(" + g.IdTicketEmergencia + "," + (g.IdTicketSala != null ? 2/*Sala*/ : 1/*Trauma*/) + ");\" class='btn btn-primary btn-xs' >Registrar</button>",
+                            //  Registrar = "<button type='button' id='btnRegistrarAtencion' onclick=\"RegistrarAtencionEmergencia(" + g.IdTicketEmergencia + "," + (g.IdTicketSala != null ? 2/*Sala*/ : 1/*Trauma*/) + ");\" class='btn btn-primary btn-xs' >Registrar</button>",
                             Modificar = "<button type='button' id='btnModificarAtencion' onclick=\"ModificarAtencionEmergencia(" + g.IdTicketEmergencia + "," +
                              g.IdPersonalEmergencia + "," +
                                g.IdTratamiento + ",'" +
@@ -336,8 +336,8 @@ namespace RicardoPalma.Business
                             Paciente = g.Paciente,
                             Medico = g.Medico,
                             Tratamiento = g.Tratamiento,
-                            Diagnostico = (g.IdTicketSala != null ? g.DiagnosticoObservacion : g.DiagnosticoTrauma),
-                            Sala = (g.IdTicketSala == null && g.IdTicketTrauma != null ? "Unidad Trauma" : "Sala Observación")
+                            Diagnostico = (g.IdTicketSala != null ? g.DiagnosticoObservacion : g.DiagnosticoTrauma)
+                            //Sala = (g.IdTicketSala == null && g.IdTicketTrauma != null ? "Unidad Trauma" : "Sala Observación")
                         }).ToList();
 
                     }

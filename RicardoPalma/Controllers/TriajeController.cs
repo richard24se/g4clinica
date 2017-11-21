@@ -23,12 +23,28 @@ namespace RicardoPalma.Controllers
             try
             {
                 triaje = new BLTriaje().ListarSintomasPacientes();
-            } 
+            }
             catch (Exception ex)
             {
                 throw ex;
             }
             return View(triaje);
+        }
+
+
+        public ActionResult GetSintomaById(string sintoma)
+        {
+            string cadena = string.Empty;
+            try
+            {
+                cadena = new BLTriaje().GetSintomaById(sintoma);
+                return Json(new { success = true, responseText = "OK", data = cadena }, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, responseText = ConfigurationManager.AppSettings["strErrorGeneral"] }, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

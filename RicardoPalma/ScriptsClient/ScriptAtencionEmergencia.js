@@ -49,7 +49,7 @@ $(document).ready(function () {
     });
 
 
- 
+
 
 });
 
@@ -94,7 +94,7 @@ function ModificarAtencionEmergencia(idticketemergencia, idmedico, idtratamiento
     $('#lsMedicoModificar option[value=' + idmedico + ']').prop('selected', true);
     $('#lsTratamientoModificar option[value=' + idtratamiento + ']').prop('selected', true);
     $('#lsSalaModificar option[value=' + sala + ']').prop('selected', true);
-    $('#txtDiagnosticoModificar').val(diagnostico);
+    //$('#txtDiagnosticoModificar').val(diagnostico);
 
     $('#hdIdTicketEmergencia_Modificar').val(idticketemergencia);
     $('#divModificarAtencionEmergencia').modal({ backdrop: 'static', keyboard: false })
@@ -105,7 +105,7 @@ function GuardarModificarAtencionEmergencia() {
     $.ajax({
         type: 'GET',
         url: urlestatica + "Atencion/ModificarAtencionEmergencia",
-        data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "diagnostico": $('#txtDiagnosticoModificar').val(), "idsala": $('#lsSalaModificar').val() },
+        data: { "idTicketEmergencia": $('#hdIdTicketEmergencia_Modificar').val(), "idmedico": $('#lsMedicoModificar').val(), "idtratamiento": $('#lsTratamientoModificar').val(), "idsala": $('#lsSalaModificar').val() },
         dataType: 'json',
         success: function (response) {
             if (response != null && response.success && response.responseText == 'OK') {
@@ -160,12 +160,14 @@ function EliminarAtencionEmergencia(idticketemergencia) {
 
 
 function BuscarAtencionEmergencia() {
+
+
     vartablaOT = $('#tblListado').DataTable({
         "scrollY": 300,
         "scrollX": true,
         "ajax": {
             url: urlestatica + "Atencion/BuscarAtencionEmergencia",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#hdIdPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": ($("#txtPaciente").val() == '' ? -1 : $("#hdIdPaciente").val()), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val(), "sala": $("#lsSala").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
@@ -175,7 +177,7 @@ function BuscarAtencionEmergencia() {
             }
         },
         "columns": [
-            { "data": "Registrar" },
+            //{ "data": "Registrar" },
             { "data": "Modificar" },
             { "data": "Eliminar" },
             { "data": "Ingreso" },
@@ -183,7 +185,7 @@ function BuscarAtencionEmergencia() {
             { "data": "Medico" },
             { "data": "Tratamiento" },
             { "data": "Diagnostico" },
-            { "data": "Sala" },
+            //{ "data": "Sala" },
         ],
         "bDestroy": true,
         "ordering": true,
@@ -215,7 +217,7 @@ function BuscarAtencionEmergencia() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Órdenes de Trabajo',
+            title: 'Atenciones',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

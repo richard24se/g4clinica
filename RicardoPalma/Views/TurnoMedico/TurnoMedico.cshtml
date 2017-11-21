@@ -1,0 +1,183 @@
+﻿@model  RicardoPalma.Models.BEAtencionSalaObservacion
+@{
+    ViewBag.Title = "Turno Médico";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "fromTirnoMedico" }))
+{
+    @Html.AntiForgeryToken()
+    <script src="@(new Uri(Request.Url, Url.Content("~")))ScriptsClient/ScriptTurnoMedico.js"></script>
+
+    <fieldset>
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Filtro turnos médicos de emergencia</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    Fecha: <input type='text' class="form-control" id='txtFechaInicio' style="width:150px" onkeydown="return false;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button type="button" id="btnBuscar" onclick="BuscarTurnos();" class="btn btn-primary btn-sm">Buscar</button>
+                                    <button type="button" id="btnNuevo" onclick="NuevoTurnoModal();" class="btn btn-primary btn-sm">Nuevo</button>
+                                    <button type="button" id="btnSalir" class="btn btn-primary btn-sm">Salir</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+
+        <div class="panel panel panel-primary">
+            <div class="panel-heading">Listado de Turno de personal</div>
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <table id="tblListado" class="order-column display" style="font-size: 12px" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Inicio</th>
+                                    <th>Fin</th>
+                                    <th>Personal</th>
+                                    <th>Turno</th>
+                                    <th>Día</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="divModificarTurno" class="modal fade" role="dialog">
+            <input type="hidden" id="hdIDetalleTurnoModificar" />
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Actualizar Turno Médico</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:right;width:200px">Inicio: </td>
+                                <td>&nbsp;&nbsp;<span id="spInicio"></span> </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px">Fin: </td>
+                                <td>&nbsp;&nbsp;<span id="spFin"></span> </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px">Fecha: </td>
+                                <td>&nbsp;&nbsp;<span id="spFecha"></span></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px">Turno: </td>
+                                <td>&nbsp;&nbsp;<span id="spTurno"></span> </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                    Personal:
+                                </td>
+                                <td style="text-align:left">
+                                    <select id="lsPersonal" class="form-control" style="width:250px">
+                                        @foreach (RicardoPalma.Models.PersonalEmergencia item in @Model.ListadoMedicoMantenimiento)
+                                        {
+                                            <option value="@item.IdPersonalEmergencia">@item.Nombres @item.ApellidoPaterno @item.ApellidoMaterno</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;" class="control-label col-sm-2 ">
+                                    Estado:
+                                </td>
+                                <td style="text-align:left">
+                                    <select id="lsEstado" class="form-control" style="width:250px">
+                                        @foreach (RicardoPalma.Models.Estados item in @Model.ListadoEstados)
+                                        {
+                                            <option value="@item.IdEstado">@item.Descripcion</option>
+                                        }
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;" class="control-label col-sm-2 ">
+                                    Comentario:
+                                </td>
+                                <td style="text-align:left">
+                                    <textarea id="txtComentario" style="width:250px;height:50px"></textarea>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnModalGuardarModificar" class="btn btn-default" onclick="ModificarTurno();">Guardar</button>
+                        <button type="button" id="btnModalCerrarModificar" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+        <div id="divNuevoTurno" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Registrar Turno Médico</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table width="100%">
+                            <tr>
+                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                    Fecha Inicio:
+                                </td>
+                                <td style="text-align:left">
+                                    <input type='text' class="form-control" id='txtFechaInicioNuevo' onkeydown="return false;" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                    Fecha Fin:
+                                </td>
+                                <td style="text-align:left">
+                                    <input type='text' class="form-control" id='txtFechaFinNuevo' onkeydown="return false;" />
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnModalNuevo" class="btn btn-default" onclick="NuevoTurno();">Guardar</button>
+                        <button type="button" id="btnModalCerrarNuevo" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+    </fieldset>
+}
+

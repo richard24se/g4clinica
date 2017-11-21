@@ -8,6 +8,8 @@ using System.Data.Entity.SqlServer;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Net.Mail;
+using System.Net;
 
 namespace RicardoPalma.Business
 {
@@ -83,7 +85,11 @@ namespace RicardoPalma.Business
                 }
 
 
-                ////aqui es el enviar correo
+                //aqui es el enviar correo
+                if (!EnviarCorreo(req.IdRequerimientoInsumo))
+                {
+                    throw new Exception("Hubo un error al enviar el correo");
+                }
 
             }
             catch (EntityException exx)
@@ -103,7 +109,7 @@ namespace RicardoPalma.Business
 
 
 
-
+        #region Requerimiento
         public BEAtencionSalaObservacion InsumoListado()
         {
             BEAtencionSalaObservacion atencion = new BEAtencionSalaObservacion();
@@ -133,7 +139,6 @@ namespace RicardoPalma.Business
             }
             return atencion;
         }
-
 
         public List<BERequerimiento> BuscarRequerimientos(string fechaDesde, string fechaHasta, int Idsolicitante)
         {
@@ -273,7 +278,6 @@ namespace RicardoPalma.Business
             return cadenaHTML.ToString();
         }
 
-
         public void CambiarEstadoInsumo(int idrequerimiento, int idinsumo, int idestado)
         {
             try
@@ -282,6 +286,7 @@ namespace RicardoPalma.Business
                 {
                     Requerimiento_Insumo req = bdRicardo.Requerimiento_Insumo.Where(f => f.IdRequerimientoInsumo == idrequerimiento && f.IdInsumo == idinsumo).First();
                     req.IdEstado = idestado;
+                    req.EsAutorizado = (idestado == 1 ? true : false);//1=aprobado;2=noaprobado
                     bdRicardo.SaveChanges();
                 }
             }
@@ -311,10 +316,16 @@ namespace RicardoPalma.Business
                         .ToList();
                     foreach (Requerimiento_Insumo item in listado)
                     {
-                        if (checkAprobarTodos)
+                        if (checkAprobarTodos)//1=aprobado;2=noaprobado
+                        {
                             item.IdEstado = 1;
+                            item.EsAutorizado = true;
+                        }
                         else
+                        {
                             item.IdEstado = 2;
+                            item.EsAutorizado = false;
+                        }
 
                     }
 
@@ -333,5 +344,117 @@ namespace RicardoPalma.Business
                 throw ex;
             }
         }
+
+        private bool EnviarCorreo(int idrequerimiento)
+        {
+            try
+            {
+                StringBuilder cadenaHMLT = new StringBuilder();
+                using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
+                {
+
+                    var req = bdRicardo.RequerimientoInsumo.Where(g => g.IdRequerimientoInsumo == idrequerimiento).Select(h => new
+                    {
+                        h.IdRequerimientoInsumo,
+                        h.FechaSolicitud,
+                        Solicitante = h.PersonalEmergencia.Nombres + " " + h.PersonalEmergencia.ApellidoPaterno + " " + h.PersonalEmergencia.ApellidoMaterno
+                    }).First();
+
+
+                    var insumo = bdRicardo.Requerimiento_Insumo.Where(j => j.IdRequerimientoInsumo == idrequerimiento).Select(g => new
+                    {
+                        IdInsumo = g.IdInsumo,
+                        NombreInsumo = g.Insumo.NombreInsumo,
+                        Cantidad = g.Cantidad,
+                        Motivo = g.Motivo
+
+                    }).ToList();
+
+
+                    cadenaHMLT.AppendLine("<html> <div  style='width:600px' >" +
+        "<span style='font-weight:bold;font-size:17px'>Notificación: Requerimiento de Insumos de Emergencia</span>" +
+        "<table width='100%' cellspacing='8' cellpadding='0' border='0' align='center'>" +
+
+        "<tr style='border-bottom-color:black;border-width:1px;border-style:solid'>" +
+        "<td style='font-weight:bold' >N° de Requerimiento:</td>" +
+        "<td >" + req.IdRequerimientoInsumo.ToString() + "</td>	" +
+        "</tr>" +
+
+        "<tr style='border-bottom-color:black;border-width:1px;border-style:solid'>	" +
+        "<td style='font-weight:bold'>Solicitante: </td>" +
+        "<td >" + req.Solicitante +
+        "</tr>" +
+
+        "<tr style='border-bottom-color:black;border-width:1px;border-style:solid'>	" +
+        "<td style='font-weight:bold'>Fecha Solicitud: </td>" +
+        "<td >" + req.FechaSolicitud.ToString("dd/MM/yyyy") + "</td>" +
+        "</tr>" +
+        "<tr><td colspan='2'><hr/><td></tr>" +
+        "<tr style='border-bottom-color:black;border-width:1px;border-style:solid'>" +
+            "<td colspan='2' >" +
+             "<center><span style='font-weight:bold;font-size:14px'>Insumos</span></center></br>" +
+                "<table align='center'>" +
+                "<tr style='border-bottom-color:black;border-width:0.5px;border-style:solid'>" +
+                "<td style='font-weight:bold'>Insumo</td>" +
+                "<td style='font-weight:bold'>Cantidad</td>" +
+                "<td style='font-weight:bold'>Motivo</td>" +
+                "</tr>");
+                    foreach (var item in insumo)
+                    {
+                        cadenaHMLT.AppendLine("<tr>");
+                        cadenaHMLT.AppendLine("<td style='border: 1px solid black;'>" + item.NombreInsumo + "</td>");
+                        cadenaHMLT.AppendLine("<td style='border: 1px solid black;'>" + item.Cantidad + "</td>");
+                        cadenaHMLT.AppendLine("<td style='border: 1px solid black;'>" + item.Motivo + "</td>");
+                        cadenaHMLT.AppendLine("</tr>");
+                    }
+
+                    cadenaHMLT.AppendLine("</table>" +
+                 "</td>	" +
+             "</tr>" +
+
+             "<tr>	" +
+             "<td colspan='2'><a href='" + ConfigurationManager.AppSettings["strUrl"] + "RequerimientoInsumo/AprobarPorCorreo/" + req.IdRequerimientoInsumo.ToString() + "' target='_blank'>Autorizar Requerimiento</a></td>	" +
+             "</tr>" +
+
+             "</table>" +
+             "</div></html>");
+
+                }
+
+
+
+
+                var fromAddress = new MailAddress(ConfigurationManager.AppSettings["strCorreoRemitente"], ConfigurationManager.AppSettings["strNombreRemitente"]);
+                var toAddress = new MailAddress(ConfigurationManager.AppSettings["strCorreoDestinatario"], ConfigurationManager.AppSettings["strNombreDestinatario"]);
+                string fromPassword = ConfigurationManager.AppSettings["strPassword"];
+                const string subject = "Requerimiento Insumo Emergencia";
+                string body = cadenaHMLT.ToString();
+
+                var smtp = new SmtpClient
+                {
+                    Host = "smtp.gmail.com",
+                    Port = 587,
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword),
+                    Timeout = 20000
+                };
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        #endregion
     }
 }

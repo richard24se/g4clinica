@@ -9,9 +9,32 @@ $(document).ready(function () {
     });
 
 
+    $('#txtDNI').bind('copy paste cut', function (e) {
+        e.preventDefault();
+    });
 
     $('#btnSalir').click(function () {
         window.location.href = urlestatica + 'Principal/Index';
+    });
+
+    $('#txtSintoma').typeahead({
+        source: function (query, process) {
+            return $.get(urlestatica + 'Triaje/GetSintomaById', { sintoma: query }, function (data) {
+                if (data != null && data.success && data.responseText == 'OK') {
+                    data = $.parseJSON(data.data);
+                    return process(data);
+                }
+                else
+                    alert(data.responseText);
+            });
+        },
+        limit: 10,
+        displayText: function (item) { return item.name; },
+        afterSelect: function (item) {
+            $('#hdIdSintoma').val(item.id);
+        }
+
+
     });
 
 });
@@ -35,12 +58,14 @@ function BuscarPaciente() {
                 }
                 else if (response != null && response.success && response.responseText == 'NOPACIENTE') {
                     alert('El paciente con DNI ' + $('#txtDNI').val() + ' no se encuentra registrado.\n')
-                    $('#txtNuevoNombrePaciente').val('');
-                    $('#txtNuevoPaterno').val('');
-                    $('#txtNuevoMaterno').val('');
-                    $("#cmbTipoPaciente").prop('selectedIndex', 0);
+                    if (confirm('Desea ingresar un nuevo paciente?')) {
+                        $('#txtNuevoNombrePaciente').val('');
+                        $('#txtNuevoPaterno').val('');
+                        $('#txtNuevoMaterno').val('');
+                        $("#cmbTipoPaciente").prop('selectedIndex', 0);
 
-                    $('#divNuevoPaciente').modal({ backdrop: 'static', keyboard: false })
+                        $('#divNuevoPaciente').modal({ backdrop: 'static', keyboard: false })
+                    }
                 }
                 else {
                     alert(response.responseText);
@@ -48,6 +73,8 @@ function BuscarPaciente() {
             }
         });
     }
+
+
 
 
 }
@@ -73,7 +100,7 @@ function GuardarPaciente() {
             dataType: 'json',
             success: function (response) {
                 if (response != null && response.success && response.responseText == 'OK') {
-                    //alert('Se guardó correctamente');
+                    alert('Se guardó correctamente');
                     $("#divNuevoPaciente").modal("hide");
                     //$('#txtDNI').val(response.dni);
                     BuscarPaciente();
@@ -82,29 +109,32 @@ function GuardarPaciente() {
                 }
             }
         });
+
+
+
     }
 }
 
 
 
 function GenerarTriaje() {
-    var idSintomas = '';
-    $('#lsSintomas > option:selected').each(function () {
-        idSintomas = idSintomas + $(this).val() + ',';
-        //alert($(this).text() + ' ' + $(this).val());
-    });
-    idSintomas = idSintomas.substring(0, idSintomas.length - 1);
+    //var idSintomas = '';
+    //$('#lsSintomas > option:selected').each(function () {
+    //    idSintomas = idSintomas + $(this).val() + ',';
+    //    //alert($(this).text() + ' ' + $(this).val());
+    //});
+    //idSintomas = idSintomas.substring(0, idSintomas.length - 1);
 
 
     if ($("#txtDNI").val().trim() == '' || $('#txtNombrePaciente').text() == '') {
         alert('Debe buscar un paciente');
     }
-    else if (idSintomas == '') {
-        alert('Debe seleccionar al menos un síntoma');
+    else if ($("#txtSintoma").val() == '') {
+        alert('Debe tipear un síntoma');
     }
     else {
         if (confirm('Desea grabar la información?')) {
-            GenerarGrilla(idSintomas);
+            GenerarGrilla($("#hdIdSintoma").val());
         }
     }
 

@@ -24,14 +24,15 @@ namespace TecnologiaGMOS.Controllers
         {
             bool blResult = false;
             string nombres = string.Empty;
+            int cod=0;
             try
             {
-                blResult = new BLLogin().ValidarUsuario(sUsuario, sPassword, ref nombres);
+                blResult = new BLLogin().ValidarUsuario(sUsuario, sPassword, ref nombres, ref cod);
 
 
                 if (blResult)
                 {
-                    Session["Usuario"] = sUsuario;
+                    Session["Usuario"] = cod;
                     Session["NombreUsuario"] = nombres;
 
                     return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);

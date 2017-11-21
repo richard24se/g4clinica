@@ -52,7 +52,7 @@ namespace RicardoPalma.Controllers
         {
             try
             {
-                new BLAtencionEmergenciaTrauma().ModificarAtencionEmergencia(idTicketEmergencia, idmedico, idtratamiento, diagnostico, idsala);
+                new BLAtencionEmergenciaTrauma().ModificarAtencionEmergencia(idTicketEmergencia, idmedico, idtratamiento, idsala);
                 return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
             }
             catch (TimeoutException exx)

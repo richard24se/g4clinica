@@ -166,12 +166,16 @@
     <Compile Include="Business\BLAtencionEmergenciaTrauma.cs" />
     <Compile Include="Business\BLLogin.cs" />
     <Compile Include="Business\BLRequerimientoInsumo.cs" />
+    <Compile Include="Business\BLRequerimientoTurno.cs" />
     <Compile Include="Business\BLTriaje.cs" />
+    <Compile Include="Business\BLTurnoMedico.cs" />
     <Compile Include="Controllers\AtencionController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PrincipalController.cs" />
     <Compile Include="Controllers\RequerimientoInsumoController.cs" />
+    <Compile Include="Controllers\RequerimientoTurnoController.cs" />
     <Compile Include="Controllers\TriajeController.cs" />
+    <Compile Include="Controllers\TurnoMedicoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -182,11 +186,16 @@
     <Compile Include="Models\BEReporteAtencionSalaObservacion.cs" />
     <Compile Include="Models\BEReporteAtencionEmergencia.cs" />
     <Compile Include="Models\BERequerimiento.cs" />
+    <Compile Include="Models\BERequerimientoTurno.cs" />
     <Compile Include="Models\BESala.cs" />
     <Compile Include="Models\BEReporteTriaje.cs" />
     <Compile Include="Models\BEAtencionEmergencia.cs" />
     <Compile Include="Models\BETriaje.cs" />
+    <Compile Include="Models\BETurnoMedico.cs" />
     <Compile Include="Models\Destino.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DetalleTurno.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Estados.cs">
@@ -225,6 +234,9 @@
     <Compile Include="Models\RequerimientoInsumo.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\RequerimientoTurno.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Requerimiento_Insumo.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
@@ -247,6 +259,9 @@
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Triaje.cs">
+      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Turno.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Usuario.cs">
@@ -451,7 +466,9 @@
     <Content Include="ScriptsClient\ScriptConstantes.js" />
     <Content Include="ScriptsClient\ScriptLogin.js" />
     <Content Include="ScriptsClient\ScriptAtencionEmergencia.js" />
+    <Content Include="ScriptsClient\ScriptRequerimientoTurno.js" />
     <Content Include="ScriptsClient\ScriptTriaje.js" />
+    <Content Include="ScriptsClient\ScriptTurnoMedico.js" />
     <Content Include="ScriptsClient\ScriptValidaciones.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
@@ -749,6 +766,9 @@
     <Content Include="Views\Atencion\AtencionSalaObservacion.cshtml" />
     <Content Include="Views\RequerimientoInsumo\Insumo.cshtml" />
     <Content Include="Views\RequerimientoInsumo\Autorizaciones.cshtml" />
+    <Content Include="Views\RequerimientoTurno\RequerientoTurno.cshtml" />
+    <Content Include="Views\RequerimientoInsumo\AprobarPorCorreo.cshtml" />
+    <Content Include="Views\TurnoMedico\TurnoMedico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

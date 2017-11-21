@@ -7,6 +7,12 @@
     });
 
 
+    $("#txtPassword").keyup(function (event) {
+        if (event.keyCode === 13) {
+            $("#btnValidar").trigger("click");
+        }
+    });
+
 
     $('#btnValidar').click(function () {
         if ($("#txtUsuario").val().trim() == '') {

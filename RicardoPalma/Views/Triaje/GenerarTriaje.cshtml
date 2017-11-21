@@ -19,15 +19,17 @@
                             <tr>
                                 <td>
                                     <input type='text' class="text" maxlength="8" style="width:100px" onkeypress="return SoloNumerico(event);" id='txtDNI' />
-                                    <button type="button" id="btnBuscarPaciente" onclick="BuscarPaciente();" class="btn btn-default">Buscar Paciente</button>
+                                    <button type="button" id="btnBuscarPaciente" onclick="BuscarPaciente();" class="btn btn-primary btn-sm">Buscar Paciente</button>
                                 </td>
-                                <td rowspan="6">
-                                    Síntomas: <select id="lsSintomas" multiple class="form-control" style="height:200px;font-size:11px">
+                                <td >
+                                    Síntomas: <input type='text' class="form-control" autocomplete="off" placeholder="Sintomas" maxlength="70" id='txtSintoma' />
+                                    <input type="hidden" id="hdIdSintoma" />
+                                    @*Síntomas: <select id="lsSintomas"  class="form-control" style="height:200px;font-size:11px">
                                         @foreach (RicardoPalma.Models.Sintoma item in @Model.ListadoSintomas)
                                         {
                                             <option value="@item.IdSintoma">@item.Descripcion</option>
                                         }
-                                    </select>
+                                    </select>*@
                                 </td>
                                 
                             </tr>
@@ -101,19 +103,19 @@
                     <div class="modal-body">
                         <table width="100%">
                             <tr>
-                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                <td style="text-align:right;width:200px" onkeypress="return SoloTextoNumero(event);"  class="control-label col-sm-2 ">
                                     Nombre
                                 </td>
                                 <td style="text-align:left">
-                                    <input type='text' class="form-control col-sm-2" id='txtNuevoNombrePaciente' />
+                                    <input type='text' class="form-control col-sm-2" onkeypress="return SoloTextoNumero(event);" id='txtNuevoNombrePaciente' />
                                 </td>
                             </tr>
                             <tr>
-                                <td style="text-align:right;width:200px" class="control-label col-sm-2 ">
+                                <td style="text-align:right;width:200px" onkeypress="return SoloTextoNumero(event);" class="control-label col-sm-2 ">
                                     Apellido Paterno:
                                 </td>
                                 <td style="text-align:left">
-                                    <input type='text' class="form-control col-sm-2" id='txtNuevoPaterno' />
+                                    <input type='text' class="form-control col-sm-2" onkeypress="return SoloTextoNumero(event);" id='txtNuevoPaterno' />
                                 </td>
                             </tr>
                             <tr>
@@ -121,7 +123,7 @@
                                     Apellido Materno:
                                 </td>
                                 <td style="text-align:left">
-                                    <input type='text' class="form-control col-sm-2" id='txtNuevoMaterno' />
+                                    <input type='text' class="form-control col-sm-2" onkeypress="return SoloTextoNumero(event);"  id='txtNuevoMaterno' />
                                 </td>
                             </tr>
                             <tr>

@@ -127,7 +127,7 @@ function BuscarAtencionSalaObservacion() {
         "scrollX": true,
         "ajax": {
             url: urlestatica + "Atencion/BuscarAtencionSalaObservacion",
-            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": $("#hdIdPaciente").val(), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
+            data: { "fechaDesde": $("#txtFechaInicio").val(), "fechaHasta": $("#txtFechaFin").val(), "paciente": ($("#txtPaciente").val() == '' ? -1 : $("#hdIdPaciente").val()), "medico": $("#lsMedico").val(), "destino": $("#lsDestino").val() },
             dataType: 'json',
             dataSrc: function (d) {
                 if (!d.success) {
@@ -179,7 +179,7 @@ function BuscarAtencionSalaObservacion() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Órdenes de Trabajo',
+            title: 'Atenciones',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

@@ -27,6 +27,7 @@ namespace RicardoPalma.Models
         }
     
         public virtual DbSet<Destino> Destino { get; set; }
+        public virtual DbSet<DetalleTurno> DetalleTurno { get; set; }
         public virtual DbSet<Estados> Estados { get; set; }
         public virtual DbSet<Insumo> Insumo { get; set; }
         public virtual DbSet<Paciente> Paciente { get; set; }
@@ -35,6 +36,7 @@ namespace RicardoPalma.Models
         public virtual DbSet<Protocolo> Protocolo { get; set; }
         public virtual DbSet<Requerimiento_Insumo> Requerimiento_Insumo { get; set; }
         public virtual DbSet<RequerimientoInsumo> RequerimientoInsumo { get; set; }
+        public virtual DbSet<RequerimientoTurno> RequerimientoTurno { get; set; }
         public virtual DbSet<Sintoma> Sintoma { get; set; }
         public virtual DbSet<TicketEmergencia> TicketEmergencia { get; set; }
         public virtual DbSet<TicketSalaObservacion> TicketSalaObservacion { get; set; }
@@ -42,6 +44,7 @@ namespace RicardoPalma.Models
         public virtual DbSet<TipoPaciente> TipoPaciente { get; set; }
         public virtual DbSet<Tratamiento> Tratamiento { get; set; }
         public virtual DbSet<Triaje> Triaje { get; set; }
+        public virtual DbSet<Turno> Turno { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
     }
 }
