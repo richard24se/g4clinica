@@ -18,8 +18,8 @@ namespace RicardoPalma.Business
             {
                 using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
                 {
-                    RequerimientoTurno req = bdRicardo.RequerimientoTurno.Where(h => h.IdRequerimientoTurno == idrequerimiento).First();
-                    req.Motivo = motivo;
+                    DetalleTurno req = bdRicardo.DetalleTurno.Where(h => h.IdDetalleTurno== idrequerimiento).First();
+                    req.Comentario = motivo;
                     bdRicardo.SaveChanges();
                 }
 
@@ -44,8 +44,8 @@ namespace RicardoPalma.Business
             {
                 using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
                 {
-                    RequerimientoTurno req = bdRicardo.RequerimientoTurno.Where(h => h.IdRequerimientoTurno == idrequerimiento).First();
-                    req.EsAprobado = esAprobado;
+                    DetalleTurno req = bdRicardo.DetalleTurno.Where(h => h.IdDetalleTurno == idrequerimiento).First();
+                    req.IdEstado = (esAprobado ? 1 : 2);
                     bdRicardo.SaveChanges();
                 }
 
@@ -74,15 +74,18 @@ namespace RicardoPalma.Business
 
                 using (ConnectionRicardoPalma bdRicardo = new ConnectionRicardoPalma())
                 {
-                    var reporte = bdRicardo.RequerimientoTurno.Where(h => (h.FechaSolicitud >= dfechaInicio && h.FechaSolicitud <= dfechaFin) && h.IdRequerimientoTurno == (IdRequerimiento == 0 ? h.IdRequerimientoTurno : IdRequerimiento)).Select(g => new
+                    var reporte = bdRicardo.DetalleTurno.Where(h => (h.Fecha >= dfechaInicio
+                        && h.Fecha <= dfechaFin) &&
+                        h.IdDetalleTurno == (IdRequerimiento == 0 ? h.IdDetalleTurno : IdRequerimiento)).
+                        Select(g => new
                     {
-                        g.IdRequerimientoTurno,
+                        IdRequerimientoTurno = g.IdDetalleTurno,
                         Solicitante = g.PersonalEmergencia.Nombres + " " + g.PersonalEmergencia.ApellidoPaterno + " " + g.PersonalEmergencia.ApellidoMaterno,
-                        g.FechaSolicitud,
-                        g.HoraInicio,
-                        g.HoraFin,
-                        g.Motivo,
-                        g.EsAprobado
+                        g.Fecha,
+                        g.Turno.Rango1,
+                        g.Turno.Rango2,
+                        g.Comentario,
+                        EsAprobado = (g.IdEstado == 1 ? true : false)
                     }).ToList();
 
                     foreach (var item in reporte)
@@ -91,20 +94,20 @@ namespace RicardoPalma.Business
                         string disabledDesaprobar = string.Empty;
 
                         if (item.EsAprobado)
-                            disabledAprobar = "disabled='disabled'";                            
+                            disabledAprobar = "disabled='disabled'";
                         else
                             disabledDesaprobar = "disabled='disabled'";
 
                         BERequerimientoTurno fila = new BERequerimientoTurno();
                         fila.BotonAprobar = "<button type='button' " + disabledAprobar + " onclick='AprobarDesaprobar(" + item.IdRequerimientoTurno + ",true);' class='btn btn-primary btn-xs' >Aprobar</button>";
                         fila.BotonDesaprobar = "<button type='button' " + disabledDesaprobar + " onclick='AprobarDesaprobar(" + item.IdRequerimientoTurno + ",false);' class='btn btn-primary btn-xs' >Desaprobar</button>";
-                        fila.BotonModificar = "<button type='button' onclick='MostrarModificacion("+item.IdRequerimientoTurno.ToString()+");' class='btn btn-primary btn-xs' >Modificar</button>";
+                        fila.BotonModificar = "<button type='button' onclick='MostrarModificacion(" + item.IdRequerimientoTurno.ToString() + ");' class='btn btn-primary btn-xs' >Modificar</button>";
                         fila.IdRequerimiento = item.IdRequerimientoTurno.ToString();
                         fila.Solicitante = item.Solicitante;
-                        fila.FechaSolicitud = item.FechaSolicitud.ToString("dd/MM/yyyy");
-                        fila.HoraInicio = item.HoraInicio;
-                        fila.HoraFinal = item.HoraFin;
-                        fila.Motivo = item.Motivo;
+                        fila.FechaSolicitud = item.Fecha.ToString("dd/MM/yyyy");
+                        fila.HoraInicio = item.Rango1;
+                        fila.HoraFinal = item.Rango2;
+                        fila.Motivo = item.Comentario;
                         listado.Add(fila);
                     }
 

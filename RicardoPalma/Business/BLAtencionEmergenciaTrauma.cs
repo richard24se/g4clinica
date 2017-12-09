@@ -342,8 +342,6 @@ namespace RicardoPalma.Business
 
                     }
 
-
-
                 }
             }
             catch (EntityException exx)

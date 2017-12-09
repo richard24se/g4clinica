@@ -18,7 +18,6 @@ namespace RicardoPalma.Models
         {
             this.DetalleTurno = new HashSet<DetalleTurno>();
             this.RequerimientoInsumo = new HashSet<RequerimientoInsumo>();
-            this.RequerimientoTurno = new HashSet<RequerimientoTurno>();
             this.TicketEmergencia = new HashSet<TicketEmergencia>();
         }
     
@@ -31,7 +30,6 @@ namespace RicardoPalma.Models
     
         public virtual ICollection<DetalleTurno> DetalleTurno { get; set; }
         public virtual ICollection<RequerimientoInsumo> RequerimientoInsumo { get; set; }
-        public virtual ICollection<RequerimientoTurno> RequerimientoTurno { get; set; }
         public virtual ICollection<TicketEmergencia> TicketEmergencia { get; set; }
     }
 }

@@ -28,11 +28,11 @@ namespace RicardoPalma.Controllers
 
 
         [HttpGet]
-        public ActionResult ModificarTurno(int iddetalleturno, int idpersonal, int idestado, string motivo)
+        public ActionResult ModificarTurno(int iddetalleturno, int idpersonal,  string motivo)
         {
             try
             {
-                new BLTurnoMedico().ModificarTurno(iddetalleturno, idpersonal, idestado, motivo);
+                new BLTurnoMedico().ModificarTurno(iddetalleturno, idpersonal, motivo);
                 return Json(new { success = true, responseText = "OK" }, JsonRequestBehavior.AllowGet);
             }
             catch (TimeoutException exx)

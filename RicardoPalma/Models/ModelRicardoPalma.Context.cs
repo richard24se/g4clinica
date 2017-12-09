@@ -36,7 +36,6 @@ namespace RicardoPalma.Models
         public virtual DbSet<Protocolo> Protocolo { get; set; }
         public virtual DbSet<Requerimiento_Insumo> Requerimiento_Insumo { get; set; }
         public virtual DbSet<RequerimientoInsumo> RequerimientoInsumo { get; set; }
-        public virtual DbSet<RequerimientoTurno> RequerimientoTurno { get; set; }
         public virtual DbSet<Sintoma> Sintoma { get; set; }
         public virtual DbSet<TicketEmergencia> TicketEmergencia { get; set; }
         public virtual DbSet<TicketSalaObservacion> TicketSalaObservacion { get; set; }

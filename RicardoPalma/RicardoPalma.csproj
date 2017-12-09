@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,7 +43,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -232,9 +236,6 @@
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RequerimientoInsumo.cs">
-      <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RequerimientoTurno.cs">
       <DependentUpon>ModelRicardoPalma.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Requerimiento_Insumo.cs">

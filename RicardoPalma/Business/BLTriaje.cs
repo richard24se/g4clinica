@@ -96,6 +96,7 @@ namespace RicardoPalma.Business
             return bPaciente;
         }
 
+
         public void GuardarPaciente(int dni, string nombre, string appPaterno, string appMaterno, int tipoCliente)
         {
             Paciente bPaciente = new Paciente();
@@ -276,9 +277,6 @@ namespace RicardoPalma.Business
             }
             return reporteFinal;
         }
-
-
-
-
+        
     }
 }
