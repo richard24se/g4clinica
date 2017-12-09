@@ -48,12 +48,13 @@ namespace UnitTestRicardoPalma
             //Arange o Planteamiento
            
             const int iddetalleturno = 286;
+            const int idestado = 1;
             const int idpersonal = 3;
             const string motivo = "Asignación de Médico";
 
             //Act o Prueba
             BLTurnoMedico blTurnoMedico = new BLTurnoMedico();
-            blTurnoMedico.ModificarTurno(iddetalleturno, idpersonal, motivo);
+            blTurnoMedico.ModificarTurno(iddetalleturno, idpersonal, idestado, motivo);
         }
 
         [TestMethod]
@@ -61,7 +62,7 @@ namespace UnitTestRicardoPalma
         {
             //Arange o Planteamiento
 
-            const int idRequerimiento = 286;
+            const int idRequerimiento = 1;
             const bool isaprobado = true;
 
             //Act o Prueba

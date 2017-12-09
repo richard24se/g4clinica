@@ -15,6 +15,7 @@
         <EntityTypeShape EntityType="ModelRicardoPalma.Protocolo" Width="1.5" PointX="5.25" PointY="0.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.Requerimiento_Insumo" Width="1.5" PointX="5.25" PointY="18.625" />
         <EntityTypeShape EntityType="ModelRicardoPalma.RequerimientoInsumo" Width="1.5" PointX="3" PointY="19.375" />
+        <EntityTypeShape EntityType="ModelRicardoPalma.RequerimientoTurno" Width="1.5" PointX="3" PointY="12.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.Sintoma" Width="1.5" PointX="3" PointY="0.75" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TicketEmergencia" Width="1.5" PointX="3" PointY="7.25" />
         <EntityTypeShape EntityType="ModelRicardoPalma.TicketSalaObservacion" Width="1.5" PointX="0.75" PointY="5.25" />
@@ -33,6 +34,7 @@
         <AssociationConnector Association="ModelRicardoPalma.FK_Paciente_TipoPaciente" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_Paciente" />
         <AssociationConnector Association="ModelRicardoPalma.FK_RequerimientoInsumo_PersonalEmergencia" />
+        <AssociationConnector Association="ModelRicardoPalma.FK_RequerimientoTurno_PersonalEmergencia" />
         <AssociationConnector Association="ModelRicardoPalma.FK_TicketEmergencia_PersonalEmergencia" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Protocolo_Prioridad" />
         <AssociationConnector Association="ModelRicardoPalma.FK_Triaje_Prioridad" />

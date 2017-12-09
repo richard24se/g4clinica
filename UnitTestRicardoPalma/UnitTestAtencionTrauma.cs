@@ -86,7 +86,7 @@ namespace UnitTestRicardoPalma
         public void eliminarAtencion()
         {
             //Arange o Planteamiento
-            const int idTicketEmergencia = 51;
+            const int idTicketEmergencia = 6;
             
             //Act o Prueba
             BLAtencionEmergenciaTrauma blAtencionTrauma = new BLAtencionEmergenciaTrauma();

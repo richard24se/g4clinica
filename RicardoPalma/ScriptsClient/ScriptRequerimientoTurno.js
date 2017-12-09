@@ -175,7 +175,7 @@ function BuscarRequerimientos() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Atenciones',
+            title: 'Atenciones_SalaObservacion',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

@@ -11,7 +11,7 @@ namespace RicardoPalma.Business
     public class BLTurnoMedico
     {
 
-        public void ModificarTurno(int iddetalleturno, int idpersonal, string motivo)
+        public void ModificarTurno(int iddetalleturno, int idpersonal, int idestado, string motivo)
         {
             try
             {
@@ -19,7 +19,7 @@ namespace RicardoPalma.Business
                 {
                     DetalleTurno req = bdRicardo.DetalleTurno.Where(f => f.IdDetalleTurno == iddetalleturno).First();
                     req.IdPersonalEmergencia = idpersonal;
-                    //req.IdEstado = idestado;//1=aprobado;2=noaprobado
+                    req.IdEstado = idestado;//1=aprobado;2=noaprobado
                     req.Comentario = motivo;
                     bdRicardo.SaveChanges();
                 }

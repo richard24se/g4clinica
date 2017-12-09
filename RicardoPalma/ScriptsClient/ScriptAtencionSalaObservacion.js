@@ -169,7 +169,7 @@ function BuscarAtencionSalaObservacion() {
         buttons: [
             {
                 extend: 'excelHtml5',
-                title: 'Listado_OT',
+                title: 'Atenciones_SalaObservacion',
                 exportOptions: {
                     //columns: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
                     columns: ':visible'
@@ -182,7 +182,7 @@ function BuscarAtencionSalaObservacion() {
             },
         {
             extend: 'pdfHtml5',
-            title: 'Atenciones',
+            title: 'Atenciones_SalaObservacion',
             orientation: 'landscape',
             pageSize: 'LEGAL',
             exportOptions: {

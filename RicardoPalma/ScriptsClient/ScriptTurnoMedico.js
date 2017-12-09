@@ -64,7 +64,7 @@ function ModificarTurno() {
         $.ajax({
             type: 'GET',
             url: urlestatica + "TurnoMedico/ModificarTurno",
-            data: { "iddetalleturno": $('#hdIDetalleTurnoModificar').val(), "idpersonal": $('#lsPersonal').val(),"motivo": $('#txtComentario').val() },
+            data: { "iddetalleturno": $('#hdIDetalleTurnoModificar').val(), "idpersonal": $('#lsPersonal').val(), "idestado": $('#lsEstado').val(), "motivo": $('#txtComentario').val() },
             dataType: 'json',
             success: function (response) {
                 if (response != null && response.success && response.responseText == 'OK') {
@@ -77,7 +77,7 @@ function ModificarTurno() {
                     $('#spTurno').text('');
                     $('#txtComentario').val('');
                     $("#lsPersonal").prop('selectedIndex', 0);
-                    //$("#lsEstado").prop('selectedIndex', 0);
+                    $("#lsEstado").prop('selectedIndex', 0);
                     BuscarTurnos();
                 } else {
                     alert(response.responseText);

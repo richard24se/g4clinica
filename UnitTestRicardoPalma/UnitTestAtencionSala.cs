@@ -58,9 +58,9 @@ namespace UnitTestRicardoPalma
         public void modificarAtencion()
         {
             //Arange o Planteamiento
-            const int idTicketEmergencia = 28;
+            const int idTicketEmergencia = 17;
             const int idMedico = 1;
-            const int idTrataiento = 12;
+            const int idTrataiento = 1;
             const string diagnostico = "Receta médica";
             const string condicioningreso = "Internado si es necesario";
             const string condicionegreso = "Descanso médico";
